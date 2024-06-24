@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <StartupObject>BattleRunner.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Json\**" />
+    <EmbeddedResource Remove="Json\**" />
+    <None Remove="Json\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BattleEngine\BattleEngine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="BattleEngine" />
+    <Using Include="BattleEngine.common.Global">
+      <Static>True</Static>
+    </Using>
+    <Using Include="BattleEngine.common.JsonHandler">
+      <Static>True</Static>
+    </Using>
+    <Using Include="BattleEngine.common.User">
+      <Static>True</Static>
+    </Using>
+    <Using Include="BattleEngine.main" />
+  </ItemGroup>
+
+</Project>
