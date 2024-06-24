@@ -16,7 +16,7 @@ namespace BattleEngine.common
 
             File.WriteAllText(User.ActorPath + $@"\{schema.InternalName.ToLower()}.json", Intermediary);
         }
-        public static void SaveJson(Move mov)
+        public static void SaveJson(MoveSchema mov)
         {
             string Intermediary = JsonSerializer.Serialize(mov, Global.JsonFormatter);
 

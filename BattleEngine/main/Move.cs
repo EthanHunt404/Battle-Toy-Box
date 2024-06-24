@@ -71,20 +71,27 @@ namespace BattleEngine.main
             Category = category;
             Component = component;
         }
-        public Move(string internalfile)
+        public Move(string name, bool isfile)
         {
-            string JsonString = File.ReadAllText($@"{User.MovePath}\{internalfile}.json");
-            MoveSchema origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, JsonFormatter);
+            if (isfile == true)
+            {
+                string JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
+                MoveSchema origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, JsonFormatter);
 
-            ID = origin.ID;
-            InternalName = origin.InternalName;
+                ID = origin.ID;
+                InternalName = origin.InternalName;
 
-            DisplayName = origin.DisplayName;
-            Description = origin.Description;
+                DisplayName = origin.DisplayName;
+                Description = origin.Description;
 
-            Power = origin.Power;
-            Category = origin.Category;
-            Component = origin.Component;
+                Power = origin.Power;
+                Category = origin.Category;
+                Component = origin.Component;
+            }
+            else
+            {
+                throw new ArgumentNullException("isfile", "param was never confirmed");
+            }
         }
 
         public static implicit operator Move(MoveSchema schema)

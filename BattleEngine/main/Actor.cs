@@ -171,27 +171,34 @@ namespace BattleEngine.main
             MoveSet = new List<Move>();
             MoveSet.AddRange(moves);
         }
-        public Actor(string internalfile)
+        public Actor(string name, bool isfile)
         {
-            string JsonString = File.ReadAllText($@"{User.ActorPath}\{internalfile}.json");
-            ActorSchema origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, JsonFormatter);
+            if (isfile == true)
+            {
+                string JsonString = File.ReadAllText($@"{User.ActorPath}\{name}.json");
+                ActorSchema origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, JsonFormatter);
 
-            ID = origin.ID;
+                ID = origin.ID;
 
-            InternalName = origin.InternalName;
-            DisplayName = origin.DisplayName;
+                InternalName = origin.InternalName;
+                DisplayName = origin.DisplayName;
 
-            Level = origin.Level;
+                Level = origin.Level;
 
-            MaxHealth = origin.MaxHealth;
-            Health = MaxHealth;
+                MaxHealth = origin.MaxHealth;
+                Health = MaxHealth;
 
-            MitigationValue = 0;
-            IsHurt += Mitigate;
+                MitigationValue = 0;
+                IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>(origin.Attributes);
+                Attributes = new Dictionary<string, int>(origin.Attributes);
 
-            MoveSet = new List<Move>(origin.MoveSet);
+                MoveSet = new List<Move>(origin.MoveSet);
+            }
+            else
+            {
+                throw new ArgumentNullException("isfile", "param was never confirmed");
+            }
         }
 
         public static implicit operator Actor(ActorSchema schema)
