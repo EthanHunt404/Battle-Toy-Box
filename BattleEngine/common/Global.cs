@@ -4,12 +4,12 @@ namespace BattleEngine.common
 {
     public static class Global
     {
-        public static JsonSerializerOptions JsonFormatter = new JsonSerializerOptions();
+        public static JsonSerializerOptions SchemaFormatter = new JsonSerializerOptions();
 
         static Global()
         {
-            JsonFormatter.WriteIndented = true;
-            JsonFormatter.IncludeFields = true;
+            SchemaFormatter.WriteIndented = true;
+            SchemaFormatter.IncludeFields = true;
         }
 
         public enum Values

@@ -20,15 +20,6 @@
 
   <ItemGroup>
     <Using Include="BattleEngine" />
-    <Using Include="BattleEngine.common.Global">
-      <Static>True</Static>
-    </Using>
-    <Using Include="BattleEngine.common.JsonHandler">
-      <Static>True</Static>
-    </Using>
-    <Using Include="BattleEngine.common.User">
-      <Static>True</Static>
-    </Using>
     <Using Include="BattleEngine.main" />
   </ItemGroup>
 

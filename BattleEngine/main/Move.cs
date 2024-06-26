@@ -5,8 +5,6 @@ namespace BattleEngine.main
 {
     public record Move
     {
-        public static int TotalMoves { get; private set; }
-
         public int ID { get; private set; }
         public string InternalName { get; private set; }
 
@@ -40,15 +38,9 @@ namespace BattleEngine.main
         public Categories Category { get; set; }
         public Components Component { get; set; }
 
-        static Move()
-        {
-            TotalMoves = 0;
-        }
-
         public Move()
         {
-            ID = TotalMoves;
-            TotalMoves += 1;
+            ID = IdHandler.MoveTotalIDs;
 
             InternalName = $"Move {ID}";
             DisplayName = $"Placeholder";
@@ -60,10 +52,9 @@ namespace BattleEngine.main
         }
         public Move(string internalname, string displayname, string description, int power, Categories category, Components component)
         {
-            ID = TotalMoves;
-            TotalMoves += 1;
+            ID = IdHandler.MoveTotalIDs;
 
-            InternalName = internalname;
+            InternalName = internalname.ToLower();
             DisplayName = displayname;
             Description = description;
 
@@ -75,8 +66,19 @@ namespace BattleEngine.main
         {
             if (isfile == true)
             {
-                string JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
-                MoveSchema origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, JsonFormatter);
+                string JsonString;
+                MoveSchema origin;
+
+                if (name.Contains(".json"))
+                {
+                    JsonString = File.ReadAllText(name);
+                    origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, SchemaFormatter);
+                }
+                else
+                {
+                    JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
+                    origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, SchemaFormatter);
+                }
 
                 ID = origin.ID;
                 InternalName = origin.InternalName;

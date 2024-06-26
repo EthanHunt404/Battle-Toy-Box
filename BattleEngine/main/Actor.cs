@@ -8,8 +8,6 @@ namespace BattleEngine.main
 {
     public record Actor
     {
-        public static int TotalActors { get; private set; }
-
         public int ID { get; private set; }
         public string InternalName { get; private set; }
         public string DisplayName { get; set; }
@@ -90,15 +88,9 @@ namespace BattleEngine.main
         public Dictionary<string, int> Attributes { get; private set; }
         public List<Move> MoveSet { get; set; }
 
-        static Actor()
-        {
-            TotalActors = 0;
-        }
-
         public Actor()
         {
-            ID = TotalActors;
-            TotalActors += 1;
+            ID = IdHandler.ActorTotalIDs;
 
             InternalName = $"Actor {ID}";
             DisplayName = "Placeholder";
@@ -124,10 +116,9 @@ namespace BattleEngine.main
         }
         public Actor(string internalname, string displayname, int lvl, Move[] moves)
         {
-            ID = TotalActors;
-            TotalActors += 1;
+            ID = IdHandler.ActorTotalIDs;
 
-            InternalName = internalname;
+            InternalName = internalname.ToLower();
             DisplayName = displayname;
 
             Level = lvl;
@@ -152,8 +143,7 @@ namespace BattleEngine.main
         }
         public Actor(string internalname, string displayname, int lvl, Dictionary<string, int> attributes, Move[] moves)
         {
-            ID = TotalActors;
-            TotalActors += 1;
+            ID = IdHandler.ActorTotalIDs;
 
             InternalName = internalname;
             DisplayName = displayname;
@@ -173,10 +163,21 @@ namespace BattleEngine.main
         }
         public Actor(string name, bool isfile)
         {
+            string JsonString;
+            ActorSchema origin;
+
             if (isfile == true)
             {
-                string JsonString = File.ReadAllText($@"{User.ActorPath}\{name}.json");
-                ActorSchema origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, JsonFormatter);
+                if (name.Contains(".json"))
+                {
+                    JsonString = File.ReadAllText(name);
+                    origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, SchemaFormatter);
+                }
+                else
+                {
+                    JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
+                    origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, SchemaFormatter);
+                }
 
                 ID = origin.ID;
 

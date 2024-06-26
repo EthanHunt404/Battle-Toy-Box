@@ -12,7 +12,9 @@ namespace BattleRunner
     {
         public static void Main()
         {
-                        
+            Actor a = new Actor(SchemaHandler.ActorList[0], true);
+
+            Console.WriteLine(a.DisplayName);
         }
     }
 }
