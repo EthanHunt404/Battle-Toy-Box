@@ -1,5 +1,5 @@
 ﻿using BattleEngine.common;
-using BattleEngine.main;
+using System;
 using System.Runtime;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
@@ -12,9 +12,14 @@ namespace BattleRunner
     {
         public static void Main()
         {
-            Actor a = new Actor(SchemaHandler.ActorList[0], true);
+            FolderStructurer.CreateStructure();
+            Move[] movelist = [new Move("reference", true)];
 
-            Console.WriteLine(a.DisplayName);
+            Actor a = new Actor();
+            Actor b = new Actor("Kinigame", "The Ninja Kinigami", 100, movelist);
+
+            SchematicHandler.SaveSchema((ActorSchematic)a);
+            SchematicHandler.SaveSchema((ActorSchematic)b);
         }
     }
 }

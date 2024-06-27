@@ -8,15 +8,15 @@ namespace BattleEngine.common
 {
     public static class User
     {
-        public static string SchemaPath;
+        public static string SchematicPath;
         public static string ActorPath;
         public static string MovePath;
 
         static User()
         {
-            SchemaPath = @"D:\Documentos\BattleSimulator";
-            ActorPath = @$"{SchemaPath}\actors";
-            MovePath = @$"{SchemaPath}\moves";
+            SchematicPath = @"D:\Documentos\BattleSimulator";
+            ActorPath = @$"{SchematicPath}\actors";
+            MovePath = @$"{SchematicPath}\moves";
         }
     }
 }

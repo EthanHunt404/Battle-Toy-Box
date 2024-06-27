@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Xml.Linq;
 using static BattleEngine.common.Global;
 
 namespace BattleEngine.main
@@ -6,7 +7,7 @@ namespace BattleEngine.main
     public record Move
     {
         public int ID { get; private set; }
-        public string InternalName { get; private set; }
+        public string FileName { get; private set; }
 
         public string DisplayName { get; set; }
         public string Description { get; set; }
@@ -40,9 +41,9 @@ namespace BattleEngine.main
 
         public Move()
         {
-            ID = IdHandler.MoveTotalIDs;
+            ID = IdHandler.GetID(this);
 
-            InternalName = $"Move {ID}";
+            FileName = $"Move {ID}";
             DisplayName = $"Placeholder";
             Description = "Not Implemented";
 
@@ -50,11 +51,11 @@ namespace BattleEngine.main
             Category = Categories.MELEE;
             Component = Components.NEUTRAL;
         }
-        public Move(string internalname, string displayname, string description, int power, Categories category, Components component)
+        public Move(string filename, string displayname, string description, int power, Categories category, Components component)
         {
-            ID = IdHandler.MoveTotalIDs;
+            ID = IdHandler.GetID(this);
 
-            InternalName = internalname.ToLower();
+            FileName = filename.ToLower();
             DisplayName = displayname;
             Description = description;
 
@@ -67,21 +68,21 @@ namespace BattleEngine.main
             if (isfile == true)
             {
                 string JsonString;
-                MoveSchema origin;
+                MoveSchematic origin;
 
                 if (name.Contains(".json"))
                 {
                     JsonString = File.ReadAllText(name);
-                    origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, SchemaFormatter);
+                    origin = JsonSerializer.Deserialize<MoveSchematic>(JsonString, SchemaFormatter);
                 }
                 else
                 {
                     JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
-                    origin = JsonSerializer.Deserialize<MoveSchema>(JsonString, SchemaFormatter);
+                    origin = JsonSerializer.Deserialize<MoveSchematic>(JsonString, SchemaFormatter);
                 }
 
                 ID = origin.ID;
-                InternalName = origin.InternalName;
+                FileName = origin.FileName;
 
                 DisplayName = origin.DisplayName;
                 Description = origin.Description;
@@ -96,12 +97,12 @@ namespace BattleEngine.main
             }
         }
 
-        public static implicit operator Move(MoveSchema schema)
+        public static implicit operator Move(MoveSchematic schema)
         {
             Move move = new Move();
 
             move.ID = schema.ID;
-            move.InternalName = schema.InternalName;
+            move.FileName = schema.FileName;
 
             move.DisplayName = schema.DisplayName;
             move.Description = schema.Description;
@@ -121,12 +122,12 @@ namespace BattleEngine.main
     }
 
     //Json Schema
-    public struct MoveSchema
+    public struct MoveSchematic
     {
         public string Version;
 
         public int ID;
-        public string InternalName;
+        public string FileName;
 
         public string DisplayName;
         public string Description;
@@ -135,13 +136,13 @@ namespace BattleEngine.main
         public Categories Category;
         public Components Component;
 
-        public MoveSchema()
+        public MoveSchematic()
         {
             Version = "0.0.1";
             ID = -1;
 
-            InternalName = "Move Schematic";
-            DisplayName = "PlaceHolder";
+            FileName = "reference";
+            DisplayName = "Move Schematic";
             Description = "Empty";
 
             Power = -1;
@@ -149,12 +150,12 @@ namespace BattleEngine.main
             Component = Components.NONE;
         }
 
-        public static explicit operator MoveSchema(Move move)
+        public static explicit operator MoveSchematic(Move move)
         {
-            MoveSchema schema = new MoveSchema();
+            MoveSchematic schema = new MoveSchematic();
 
             schema.ID = move.ID;
-            schema.InternalName = move.InternalName;
+            schema.FileName = move.FileName;
 
             schema.DisplayName = move.DisplayName;
             schema.Description = move.Description;

@@ -9,7 +9,7 @@ namespace BattleEngine.main
     public record Actor
     {
         public int ID { get; private set; }
-        public string InternalName { get; private set; }
+        public string FileName { get; private set; }
         public string DisplayName { get; set; }
 
         private double _maxhp;
@@ -90,9 +90,9 @@ namespace BattleEngine.main
 
         public Actor()
         {
-            ID = IdHandler.ActorTotalIDs;
+            ID = IdHandler.GetID(this);
 
-            InternalName = $"Actor {ID}";
+            FileName = $"Actor {ID}";
             DisplayName = "Placeholder";
 
             Level = 5;
@@ -114,11 +114,11 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>() { new Move() };
         }
-        public Actor(string internalname, string displayname, int lvl, Move[] moves)
+        public Actor(string filename, string displayname, int lvl, Move[] moves)
         {
-            ID = IdHandler.ActorTotalIDs;
+            ID = IdHandler.GetID(this);
 
-            InternalName = internalname.ToLower();
+            FileName = filename.ToLower();
             DisplayName = displayname;
 
             Level = lvl;
@@ -141,11 +141,11 @@ namespace BattleEngine.main
             MoveSet = new List<Move>();
             MoveSet.AddRange(moves);
         }
-        public Actor(string internalname, string displayname, int lvl, Dictionary<string, int> attributes, Move[] moves)
+        public Actor(string filename, string displayname, int lvl, Dictionary<string, int> attributes, Move[] moves)
         {
-            ID = IdHandler.ActorTotalIDs;
+            ID = IdHandler.GetID(this);
 
-            InternalName = internalname;
+            FileName = filename;
             DisplayName = displayname;
 
             Level = lvl;
@@ -164,24 +164,24 @@ namespace BattleEngine.main
         public Actor(string name, bool isfile)
         {
             string JsonString;
-            ActorSchema origin;
+            ActorSchematic origin;
 
             if (isfile == true)
             {
                 if (name.Contains(".json"))
                 {
                     JsonString = File.ReadAllText(name);
-                    origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, SchemaFormatter);
+                    origin = JsonSerializer.Deserialize<ActorSchematic>(JsonString, SchemaFormatter);
                 }
                 else
                 {
-                    JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
-                    origin = JsonSerializer.Deserialize<ActorSchema>(JsonString, SchemaFormatter);
+                    JsonString = File.ReadAllText($@"{User.ActorPath}\{name}.json");
+                    origin = JsonSerializer.Deserialize<ActorSchematic>(JsonString, SchemaFormatter);
                 }
 
                 ID = origin.ID;
 
-                InternalName = origin.InternalName;
+                FileName = origin.FileName;
                 DisplayName = origin.DisplayName;
 
                 Level = origin.Level;
@@ -202,12 +202,12 @@ namespace BattleEngine.main
             }
         }
 
-        public static implicit operator Actor(ActorSchema schema)
+        public static implicit operator Actor(ActorSchematic schema)
         {
             Actor actor = new Actor();
 
             actor.ID = schema.ID;
-            actor.InternalName = schema.InternalName;
+            actor.FileName = schema.FileName;
             actor.DisplayName = schema.DisplayName;
             actor.Level = schema.Level;
             actor.MaxHealth = schema.MaxHealth;
@@ -247,13 +247,13 @@ namespace BattleEngine.main
     }
 
     //Json Schema
-    public struct ActorSchema
+    public struct ActorSchematic
     {
         public string Version;
 
         public int ID;
 
-        public string InternalName;
+        public string FileName;
         public string DisplayName;
 
         public double MaxHealth;
@@ -263,13 +263,13 @@ namespace BattleEngine.main
         public Dictionary<string, int> Attributes;
         public List<Move> MoveSet;
 
-        public ActorSchema()
+        public ActorSchematic()
         {
             Version = "0.0.1";
             ID = -1;
 
-            InternalName = $"Actor Schematic";
-            DisplayName = "PlaceHolder";
+            FileName = $"reference";
+            DisplayName = "Actor Schematic";
 
             MaxHealth = -1;
 
@@ -279,12 +279,12 @@ namespace BattleEngine.main
             MoveSet = new List<Move>();
         }
 
-        public static explicit operator ActorSchema(Actor actor)
+        public static explicit operator ActorSchematic(Actor actor)
         {
-            ActorSchema schema = new ActorSchema();
+            ActorSchematic schema = new ActorSchematic();
 
             schema.ID = actor.ID;
-            schema.InternalName = actor.InternalName;
+            schema.FileName = actor.FileName;
             schema.DisplayName = actor.DisplayName;
             schema.Level = actor.Level;
             schema.MaxHealth = actor.MaxHealth;
