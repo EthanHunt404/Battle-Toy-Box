@@ -9,14 +9,14 @@ namespace BattleEngine.common
     public static class User
     {
         public static string SchematicPath;
-        public static string ActorPath;
         public static string MovePath;
+        public static string ActorPath;
 
         static User()
         {
             SchematicPath = @"D:\Documentos\Battle Toy Box";
-            ActorPath = @$"{SchematicPath}\actors";
             MovePath = @$"{SchematicPath}\moves";
+            ActorPath = @$"{SchematicPath}\actors";
         }
     }
 }

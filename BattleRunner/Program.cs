@@ -13,12 +13,11 @@ namespace BattleRunner
         public static void Main()
         {
             FolderStructurer.CreateStructure(0);
+
             Move[] movelist = [new Move("reference", true)];
 
-            Actor a = new Actor();
             Actor b = new Actor("Kinigame", "The Ninja Kinigami", 100, movelist);
 
-            SchematicHandler.SaveSchema((ActorSchematic)a);
             SchematicHandler.SaveSchema((ActorSchematic)b);
         }
     }

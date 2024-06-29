@@ -10,11 +10,11 @@ namespace BattleEngine.common
 {
     public static class IdHandler
     {
-        public static int ActorTotalIDs { get; private set; }
         public static int MoveTotalIDs { get; private set; }
+        public static int ActorTotalIDs { get; private set; }
 
-        public static List<int> ActorIdList { get; private set; }
         public static List<int> MoveIdList { get; private set; }
+        public static List<int> ActorIdList { get; private set; }
 
 
         static IdHandler()
@@ -33,20 +33,6 @@ namespace BattleEngine.common
                 ActorTotalIDs = basefile.ActorTotalIDs;
                 MoveTotalIDs = basefile.MoveTotalIDs;
 
-                foreach (string actor in SchematicHandler.ActorList)
-                {
-                    Actor currentactor = new Actor(actor, true);
-
-                    if (ActorIdList.Contains(currentactor.ID))
-                    {
-                        SchematicHandler.InvalidActors.Add(actor);
-                        SchematicHandler.ActorList.Remove(actor);
-                    }
-                    else
-                    {
-                        ActorIdList.Add(currentactor.ID);
-                    }
-                }
                 foreach (string move in SchematicHandler.MoveList)
                 {
                     Move currentmove = new Move(move, true);
@@ -61,48 +47,54 @@ namespace BattleEngine.common
                         MoveIdList.Add(currentmove.ID);
                     }
                 }
-
-                ActorTotalIDs = ActorIdList.Max();
-                MoveTotalIDs = MoveIdList.Max();
-
-                SaveIDs();
-            }
-            else
-            {
-                ResetIDs(true);
-            }
-        }
-
-        public static int GetID(Actor asker)
-        {
-            if (ActorIdList != null)
-            {
-                int current = ActorTotalIDs;
-
-                while (ActorIdList.Contains(current))
+                foreach (string actor in SchematicHandler.ActorList)
                 {
-                    current++;
+                    Actor currentactor = new Actor(actor, true);
+
+                    if (ActorIdList.Contains(currentactor.ID))
+                    {
+                        SchematicHandler.InvalidActors.Add(actor);
+                        SchematicHandler.ActorList.Remove(actor);
+                    }
+                    else
+                    {
+                        ActorIdList.Add(currentactor.ID);
+                    }
                 }
 
-                ActorIdList.Add(current);
-                ActorTotalIDs = current + 1;
+                MoveTotalIDs = MoveIdList.Max();
+                ActorTotalIDs = ActorIdList.Max();
 
                 SaveIDs();
-
-                return current;
             }
             else
             {
-                int current = ActorTotalIDs;
-
-                ActorIdList.Add(current);
-                ActorTotalIDs = current + 1;
-
-                SaveIDs();
-
-                return current;
+                ResetIDs();
             }
         }
+
+        private static void SaveIDs()
+        {
+            IdSchematic idschema = new IdSchematic();
+            idschema.MoveTotalIDs = MoveTotalIDs;
+            idschema.ActorTotalIDs = ActorTotalIDs;
+
+            string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
+
+            File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
+        }
+
+        private static void ResetIDs()
+        {
+            IdSchematic idschema = new IdSchematic();
+            idschema.ActorTotalIDs = 0;
+            idschema.MoveTotalIDs = 0;
+
+            string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
+
+            File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
+        }
+
         public static int GetID(Move asker)
         {
             if (MoveIdList != null)
@@ -133,51 +125,51 @@ namespace BattleEngine.common
                 return current;
             }
         }
-
-        private static void SaveIDs()
+        public static int GetID(Actor asker)
         {
-            IdSchematic idschema = new IdSchematic();
-            idschema.ActorTotalIDs = ActorTotalIDs;
-            idschema.MoveTotalIDs = MoveTotalIDs;
-
-            string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
-
-            File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
-        }
-
-        private static void ResetIDs(bool permission)
-        {
-            if (permission)
+            if (ActorIdList != null)
             {
-                IdSchematic idschema = new IdSchematic();
-                idschema.ActorTotalIDs = 0;
-                idschema.MoveTotalIDs = 0;
+                int current = ActorTotalIDs;
 
-                string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
+                while (ActorIdList.Contains(current))
+                {
+                    current++;
+                }
 
-                File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
+                ActorIdList.Add(current);
+                ActorTotalIDs = current + 1;
+
+                SaveIDs();
+
+                return current;
             }
             else
             {
-                throw new ArgumentException("Permission wanst signed");
+                int current = ActorTotalIDs;
+
+                ActorIdList.Add(current);
+                ActorTotalIDs = current + 1;
+
+                SaveIDs();
+
+                return current;
             }
-
         }
-
-        
     }
 
     public record IdSchematic
     {
         public string Version;
-        public int ActorTotalIDs;
         public int MoveTotalIDs;
+        public int ActorTotalIDs;
+        public string Message;
 
         public IdSchematic()
         {
             Version = "0.0.1";
-            ActorTotalIDs = 0;
             MoveTotalIDs = 0;
+            ActorTotalIDs = 0;
+            Message = "Do not delete this, it may cause problems in the indexing of actors and moves alike";
         }
     }
 }

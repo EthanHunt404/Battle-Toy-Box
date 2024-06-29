@@ -12,22 +12,15 @@ namespace BattleEngine.common
         {
             if (level == 0)
             {
-                if (!Directory.Exists(User.SchematicPath))
-                {
-                    Directory.CreateDirectory(User.SchematicPath);
-                }
-                if (!Directory.Exists(User.MovePath))
-                {
-                    Directory.CreateDirectory(User.MovePath);
-                    MoveSchematic movereference = new MoveSchematic();
-                    SchematicHandler.SaveSchema(movereference);
-                }
-                if (!Directory.Exists(User.ActorPath))
-                {
-                    Directory.CreateDirectory(User.ActorPath);
-                    ActorSchematic actorreference = new ActorSchematic();
-                    SchematicHandler.SaveSchema(actorreference);
-                }
+                Directory.CreateDirectory(User.SchematicPath);
+
+                Directory.CreateDirectory(User.MovePath);
+                MoveSchematic movereference = new MoveSchematic();
+                SchematicHandler.SaveSchema(movereference);
+
+                Directory.CreateDirectory(User.ActorPath);
+                ActorSchematic actorreference = new ActorSchematic();
+                SchematicHandler.SaveSchema(actorreference);
             }
             else if (level == 1)
             {
