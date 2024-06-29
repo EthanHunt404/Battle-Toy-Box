@@ -8,28 +8,42 @@ namespace BattleEngine.common
 {
     public static class FolderStructurer
     {
-        static FolderStructurer()
+        public static void CreateStructure(int level)
         {
-            CreateStructure();
-        }
-
-        public static void CreateStructure()
-        {
-            if (!Directory.Exists(User.SchematicPath))
+            if (level == 0)
             {
-                Directory.CreateDirectory(User.SchematicPath);
+                if (!Directory.Exists(User.SchematicPath))
+                {
+                    Directory.CreateDirectory(User.SchematicPath);
+                }
+                if (!Directory.Exists(User.MovePath))
+                {
+                    Directory.CreateDirectory(User.MovePath);
+                    MoveSchematic movereference = new MoveSchematic();
+                    SchematicHandler.SaveSchema(movereference);
+                }
+                if (!Directory.Exists(User.ActorPath))
+                {
+                    Directory.CreateDirectory(User.ActorPath);
+                    ActorSchematic actorreference = new ActorSchematic();
+                    SchematicHandler.SaveSchema(actorreference);
+                }
             }
-            if (!Directory.Exists(User.ActorPath))
+            else if (level == 1)
+            {
+                Directory.CreateDirectory(User.MovePath);
+                MoveSchematic movereference = new MoveSchematic();
+                SchematicHandler.SaveSchema(movereference);
+            }
+            else if (level == 2)
             {
                 Directory.CreateDirectory(User.ActorPath);
                 ActorSchematic actorreference = new ActorSchematic();
                 SchematicHandler.SaveSchema(actorreference);
             }
-            if(!Directory.Exists(User.MovePath))
+            else
             {
-                Directory.CreateDirectory(User.MovePath);
-                MoveSchematic movereference = new MoveSchematic();
-                SchematicHandler.SaveSchema(movereference);
+                throw new ArgumentOutOfRangeException($"{level} number is not valid");
             }
         }
     }

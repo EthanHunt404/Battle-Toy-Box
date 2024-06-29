@@ -14,7 +14,7 @@ namespace BattleEngine.common
 
         static User()
         {
-            SchematicPath = @"D:\Documentos\BattleSimulator";
+            SchematicPath = @"D:\Documentos\Battle Toy Box";
             ActorPath = @$"{SchematicPath}\actors";
             MovePath = @$"{SchematicPath}\moves";
         }

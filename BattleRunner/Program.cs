@@ -12,7 +12,7 @@ namespace BattleRunner
     {
         public static void Main()
         {
-            FolderStructurer.CreateStructure();
+            FolderStructurer.CreateStructure(0);
             Move[] movelist = [new Move("reference", true)];
 
             Actor a = new Actor();
