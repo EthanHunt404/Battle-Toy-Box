@@ -10,17 +10,22 @@ namespace BattleEngine.common
 {
     public static class IdHandler
     {
-        public static int MoveTotalIDs { get; private set; }
-        public static int ActorTotalIDs { get; private set; }
-
         public static List<int> MoveIdList { get; private set; }
         public static List<int> ActorIdList { get; private set; }
 
+        public static Dictionary<string, string> InvalidMoves { get; private set; }
+        public static Dictionary<string, string> InvalidActors { get; private set; }
+
+        public static int MoveTotalIDs { get; private set; }
+        public static int ActorTotalIDs { get; private set; }
 
         static IdHandler()
         {
             MoveIdList = new List<int>();
             ActorIdList = new List<int>();
+
+            InvalidActors = new Dictionary<string, string>();
+            InvalidMoves = new Dictionary<string, string>();
 
             MoveTotalIDs = 0;
             ActorTotalIDs = 0;
@@ -30,31 +35,31 @@ namespace BattleEngine.common
                 string JsonString = File.ReadAllText(User.SchematicPath + @"/base.json");
                 IdSchematic basefile = JsonSerializer.Deserialize<IdSchematic>(JsonString, Global.SchemaFormatter);
 
-                ActorTotalIDs = basefile.ActorTotalIDs;
                 MoveTotalIDs = basefile.MoveTotalIDs;
+                ActorTotalIDs = basefile.ActorTotalIDs;
 
-                foreach (string move in SchematicHandler.MoveList)
+                foreach (string movepath in SchematicHandler.MoveFileList)
                 {
-                    Move currentmove = new Move(move, true);
+                    Move currentmove = new Move(movepath, true);
 
                     if (MoveIdList.Contains(currentmove.ID))
                     {
-                        SchematicHandler.InvalidMoves.Add(move);
-                        SchematicHandler.ActorList.Remove(move);
+                        InvalidMoves.Add(currentmove.FileName, movepath);
+                        SchematicHandler.ActorList.Remove(currentmove.FileName);
                     }
                     else
                     {
                         MoveIdList.Add(currentmove.ID);
                     }
                 }
-                foreach (string actor in SchematicHandler.ActorList)
+                foreach (string actorpath in SchematicHandler.ActorFileList)
                 {
-                    Actor currentactor = new Actor(actor, true);
+                    Actor currentactor = new Actor(actorpath, true);
 
                     if (ActorIdList.Contains(currentactor.ID))
                     {
-                        SchematicHandler.InvalidActors.Add(actor);
-                        SchematicHandler.ActorList.Remove(actor);
+                        InvalidActors.Add(currentactor.FileName, actorpath);
+                        SchematicHandler.ActorList.Remove(currentactor.FileName);
                     }
                     else
                     {

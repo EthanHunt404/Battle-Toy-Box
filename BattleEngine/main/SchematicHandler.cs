@@ -9,24 +9,38 @@ namespace BattleEngine.main
 {
     public static class SchematicHandler
     {
-        public static List<string> MoveList { get; private set; }
-        public static List<string> InvalidMoves { get; private set; }
+        public static List<string> MoveFileList { get; private set; }
+        public static Dictionary<string, string> MoveList { get; private set; }
 
-        public static List<string> ActorList { get; private set; }
-        public static List<string> InvalidActors { get; private set; }
+        public static List<string> ActorFileList { get; private set; }
+        public static Dictionary<string, string> ActorList { get; private set; }
 
         static SchematicHandler()
         {
-            MoveList = new List<string>();
-            InvalidMoves = new List<string>();
+            MoveList = new Dictionary<string, string>();
+            ActorList = new Dictionary<string, string>();
 
-            ActorList = new List<string>();
-            InvalidActors = new List<string>();
+            MoveFileList = new List<string>();
+            ActorFileList = new List<string>();
 
+            //create folder structure,needs to be exacly here or earlier
             FolderStructurer.CreateStructure(0);
 
-            MoveList.AddRange(Directory.EnumerateFiles(User.MovePath));
-            ActorList.AddRange(Directory.EnumerateFiles(User.ActorPath));
+            MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
+            ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));
+
+            foreach (string movepath in MoveFileList)
+            {
+                Move currentmove = new Move(movepath, true);
+
+                MoveList.Add(currentmove.FileName, movepath);
+            }
+            foreach (string actorpath in ActorFileList)
+            {
+                Actor currentactor = new Actor(actorpath, true);
+
+                ActorList.Add(currentactor.FileName, currentactor.FileName);
+            }
         }
 
         public static void SaveSchema(MoveSchematic mov)
