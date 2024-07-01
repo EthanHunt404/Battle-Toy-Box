@@ -19,11 +19,11 @@ namespace BattleEngine.common
 
         static IdHandler()
         {
-            ActorIdList = new List<int>();
             MoveIdList = new List<int>();
+            ActorIdList = new List<int>();
 
-            ActorTotalIDs = 0;
             MoveTotalIDs = 0;
+            ActorTotalIDs = 0;
 
             if (File.Exists(User.SchematicPath + @"/base.json"))
             {
