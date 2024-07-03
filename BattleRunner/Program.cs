@@ -14,8 +14,11 @@ namespace BattleRunner
         {
             FolderStructurer.CreateStructure(0);
 
-            Actor a = new Actor(SchematicHandler.ActorList["kinigami"], true);
-            Console.WriteLine(a.DisplayName);
+            Move[] moveset = [new Move("meatballsburp", "Meat Balls Burp", "I Shouldn't have put those onions in", 120, Global.Categories.AOE, Global.Components.SPECIAL)];
+
+            Actor actor = new Actor("garpend", "Garpend The Spaghetti Devourer", 2, moveset);
+
+            SchematicHandler.SaveSchema((ActorSchematic)actor);
         }
     }
 }

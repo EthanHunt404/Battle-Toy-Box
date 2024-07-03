@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace BattleEngine.common
 {
@@ -10,6 +12,7 @@ namespace BattleEngine.common
         {
             SchemaFormatter.WriteIndented = true;
             SchemaFormatter.IncludeFields = true;
+            SchemaFormatter.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         }
 
         public enum Values
@@ -31,7 +34,7 @@ namespace BattleEngine.common
             NONE = -1,
             NEUTRAL = 0,
             PHYSICAL = 1,
-            MAGICAL = 2
+            SPECIAL = 2
         }
     }
 }

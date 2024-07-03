@@ -56,8 +56,8 @@ namespace BattleEngine.main
             ID = IdHandler.GetID(this);
 
             FileName = filename.ToLower();
-            DisplayName = displayname;
-            Description = description;
+            DisplayName = $@"{displayname}";
+            Description = $@"{description}";
 
             Power = power;
             Category = category;
@@ -84,8 +84,8 @@ namespace BattleEngine.main
                 ID = origin.ID;
                 FileName = origin.FileName;
 
-                DisplayName = origin.DisplayName;
-                Description = origin.Description;
+                DisplayName = $@"{origin.DisplayName}";
+                Description = $@"{origin.Description}";
 
                 Power = origin.Power;
                 Category = origin.Category;
