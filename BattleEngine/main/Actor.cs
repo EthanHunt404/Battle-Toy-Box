@@ -103,18 +103,11 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>
-            {
-                ["ATK"] = Level,
-                ["VIT"] = Level,
-                ["INT"] = Level,
-                ["DEF"] = Level,
-                ["DGE"] = Level
-            };
+            Attributes = new Dictionary<string, int>(DefaultAttributes);
 
             MoveSet = new List<Move>() { new Move() };
         }
-        public Actor(string filename, string displayname, int lvl, Move[] moves)
+        public Actor(string filename, string displayname, int lvl, params Move[] moves)
         {
             ID = IdHandler.GetID(this);
 
@@ -129,19 +122,16 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>
+            Attributes = new Dictionary<string, int>(DefaultAttributes);
+            
+            foreach (string key in Attributes.Keys)
             {
-                ["ATK"] = Level,
-                ["VIT"] = Level,
-                ["INT"] = Level,
-                ["DEF"] = Level,
-                ["DGE"] = Level
-            };
+                Attributes[key] = 5 * Level;
+            }
 
-            MoveSet = new List<Move>();
-            MoveSet.AddRange(moves);
+            MoveSet = new List<Move>(moves);
         }
-        public Actor(string filename, string displayname, int lvl, Dictionary<string, int> attributes, Move[] moves)
+        public Actor(string filename, string displayname, int lvl, Dictionary<string, int> attributes, params Move[] moves)
         {
             ID = IdHandler.GetID(this);
 
@@ -158,8 +148,7 @@ namespace BattleEngine.main
 
             Attributes = new Dictionary<string, int>(attributes);
 
-            MoveSet = new List<Move>();
-            MoveSet.AddRange(moves);
+            MoveSet = new List<Move>(moves);
         }
         public Actor(string name, bool isfile)
         {
@@ -228,7 +217,7 @@ namespace BattleEngine.main
         {
             if (target == this)
             {
-                if (move.Component == Components.PHYSICAL)
+                if (move.Components.Contains(DefaultComponents[1]))
                 {
                     MitigationValue = result - (Attributes["DEF"] + Attributes["VIT"]);
                 }

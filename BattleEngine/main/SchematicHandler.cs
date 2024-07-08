@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace BattleEngine.main
             ActorFileList = new List<string>();
 
             //create folder structure,needs to be exacly here or earlier
-            FolderStructurer.CreateStructure(0);
+            FolderStructurer.CreateStructure();
 
             MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
             ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));

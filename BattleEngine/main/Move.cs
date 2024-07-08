@@ -37,7 +37,7 @@ namespace BattleEngine.main
         public static event DamageHandler IsHurt;
 
         public Categories Category { get; set; }
-        public Components Component { get; set; }
+        public List<string> Components { get; set; }
 
         public Move()
         {
@@ -49,9 +49,10 @@ namespace BattleEngine.main
 
             Power = 10;
             Category = Categories.MELEE;
-            Component = Components.NEUTRAL;
+
+            Components = [DefaultComponents[1]];
         }
-        public Move(string filename, string displayname, string description, int power, Categories category, Components component)
+        public Move(string filename, string displayname, string description, int power, Categories category, params string[] components)
         {
             ID = IdHandler.GetID(this);
 
@@ -61,7 +62,9 @@ namespace BattleEngine.main
 
             Power = power;
             Category = category;
-            Component = component;
+
+            Components = new List<string>(components);
+            Components.ForEach(item => { item.ToUpper(); });
         }
         public Move(string name, bool isfile)
         {
@@ -89,7 +92,9 @@ namespace BattleEngine.main
 
                 Power = origin.Power;
                 Category = origin.Category;
-                Component = origin.Component;
+                
+                Components = new List<string>(origin.Components);
+                Components.ForEach(item => { item.ToUpper(); });
             }
             else
             {
@@ -109,7 +114,7 @@ namespace BattleEngine.main
 
             move.Power = schema.Power;
             move.Category = schema.Category;
-            move.Component = schema.Component;
+            move.Components = schema.Components;
 
             return move;
         }
@@ -134,7 +139,7 @@ namespace BattleEngine.main
 
         public int Power;
         public Categories Category;
-        public Components Component;
+        public List<string> Components;
 
         public MoveSchematic()
         {
@@ -147,9 +152,8 @@ namespace BattleEngine.main
 
             Power = -1;
             Category = Categories.EFFECT;
-            Component = Components.NONE;
+            Components = new List<string>();
         }
-
         public static explicit operator MoveSchematic(Move move)
         {
             MoveSchematic schema = new MoveSchematic();
@@ -162,7 +166,7 @@ namespace BattleEngine.main
 
             schema.Power = move.Power;
             schema.Category = move.Category;
-            schema.Component = move.Component;
+            schema.Components = move.Components;
 
             return schema;
         }

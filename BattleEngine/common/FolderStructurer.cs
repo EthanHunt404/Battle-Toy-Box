@@ -8,9 +8,9 @@ namespace BattleEngine.common
 {
     public static class FolderStructurer
     {
-        public static void CreateStructure(int level)
+        public static void CreateStructure()
         {
-            if (level == 0)
+            if (!Directory.Exists(User.SchematicPath))
             {
                 Directory.CreateDirectory(User.SchematicPath);
 
@@ -22,21 +22,17 @@ namespace BattleEngine.common
                 ActorSchematic actorreference = new ActorSchematic();
                 SchematicHandler.SaveSchema(actorreference);
             }
-            else if (level == 1)
+            if (!Directory.Exists(User.MovePath))
             {
                 Directory.CreateDirectory(User.MovePath);
                 MoveSchematic movereference = new MoveSchematic();
                 SchematicHandler.SaveSchema(movereference);
             }
-            else if (level == 2)
+            if (!Directory.Exists(User.ActorPath))
             {
                 Directory.CreateDirectory(User.ActorPath);
                 ActorSchematic actorreference = new ActorSchematic();
                 SchematicHandler.SaveSchema(actorreference);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException($"{level} number is not valid");
             }
         }
     }

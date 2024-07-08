@@ -89,7 +89,7 @@ namespace BattleEngine.common
             File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
         }
 
-        private static void ResetIDs()
+        public static void ResetIDs()
         {
             IdSchematic idschema = new IdSchematic();
             idschema.ActorTotalIDs = 0;
