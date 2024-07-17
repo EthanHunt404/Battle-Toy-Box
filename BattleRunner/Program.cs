@@ -23,11 +23,11 @@ namespace BattleRunner
             Actor actor = new Actor("garpend", "Garpend The Spaghetti Devourer", 100, moveset);
             Actor actor2 = new Actor("sansadventuretime", "Sans Adventure Time", 100, moveset2);
 
-            SchematicHandler.SaveSchema((ActorSchematic)actor);
-            SchematicHandler.SaveSchema((MoveSchematic)moveset);
+            SchematicHandler.SaveSchema(actor);
+            SchematicHandler.SaveSchema(moveset);
 
-            SchematicHandler.SaveSchema((ActorSchematic)actor2);
-            SchematicHandler.SaveSchema((MoveSchematic)moveset2);
+            SchematicHandler.SaveSchema(actor2);
+            SchematicHandler.SaveSchema(moveset2);
         }
     }
 }

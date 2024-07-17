@@ -85,7 +85,7 @@ namespace BattleEngine.main
             }
         }
 
-        public Dictionary<string, int> Attributes { get; private set; }
+        public List<StatAttribute> Attributes { get; private set; }
         public List<Move> MoveSet { get; set; }
 
         public Actor()
@@ -103,9 +103,9 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>(DefaultAttributes);
+            Attributes = new List<StatAttribute>(DefaultAttributes);
 
-            MoveSet = new List<Move>() { new Move() };
+            MoveSet = [new Move()];
         }
         public Actor(string filename, string displayname, int lvl, params Move[] moves)
         {
@@ -122,16 +122,12 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>(DefaultAttributes);
-            
-            foreach (string key in Attributes.Keys)
-            {
-                Attributes[key] = 5 * Level;
-            }
+            Attributes = new List<StatAttribute>(DefaultAttributes);
+            Attributes.ForEach(item => item.Value = 5 * Level);
 
             MoveSet = new List<Move>(moves);
         }
-        public Actor(string filename, string displayname, int lvl, Dictionary<string, int> attributes, params Move[] moves)
+        public Actor(string filename, string displayname, int lvl, List<StatAttribute> attributes, params Move[] moves)
         {
             ID = IdHandler.GetID(this);
 
@@ -146,7 +142,7 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new Dictionary<string, int>(attributes);
+            Attributes = new List<StatAttribute>(attributes);
 
             MoveSet = new List<Move>(moves);
         }
@@ -181,7 +177,7 @@ namespace BattleEngine.main
                 MitigationValue = 0;
                 IsHurt += Mitigate;
 
-                Attributes = new Dictionary<string, int>(origin.Attributes);
+                Attributes = new List<StatAttribute>(origin.Attributes);
 
                 MoveSet = new List<Move>(origin.MoveSet);
             }
@@ -209,7 +205,7 @@ namespace BattleEngine.main
         public virtual void LevelUp()
         {
             Level += 1;
-            MaxHealth = Level * (Attributes["VIT"] * 1.5);
+            MaxHealth = Level * (Attributes[0].Value * 1.5);
             Health = MaxHealth;
         }
 
@@ -219,7 +215,7 @@ namespace BattleEngine.main
             {
                 if (move.Components.Contains(DefaultComponents[1]))
                 {
-                    MitigationValue = result - (Attributes["DEF"] + Attributes["VIT"]);
+                    MitigationValue = result - (Attributes[2].Value + Attributes[0].Value);
                 }
                 else
                 {
@@ -236,7 +232,7 @@ namespace BattleEngine.main
     }
 
     //Json Schema
-    public struct ActorSchematic
+    public record struct ActorSchematic
     {
         public string Version;
 
@@ -249,12 +245,12 @@ namespace BattleEngine.main
 
         public int Level;
 
-        public Dictionary<string, int> Attributes;
+        public List<StatAttribute> Attributes;
         public List<Move> MoveSet;
 
         public ActorSchematic()
         {
-            Version = "0.0.1";
+            Version = Global.Version;
             ID = -1;
 
             FileName = $"reference";
@@ -264,11 +260,11 @@ namespace BattleEngine.main
 
             Level = -1;
 
-            Attributes = new Dictionary<string, int>();
+            Attributes = new List<StatAttribute>();
             MoveSet = new List<Move>();
         }
 
-        public static explicit operator ActorSchematic(Actor actor)
+        public static implicit operator ActorSchematic(Actor actor)
         {
             ActorSchematic schema = new ActorSchematic();
 
@@ -278,7 +274,11 @@ namespace BattleEngine.main
             schema.Level = actor.Level;
             schema.MaxHealth = actor.MaxHealth;
             schema.Attributes = actor.Attributes;
-            schema.MoveSet = actor.MoveSet;
+
+            foreach (Move move in actor.MoveSet)
+            {
+                schema.MoveSet.Add(move);
+            }
 
             return schema;
         }

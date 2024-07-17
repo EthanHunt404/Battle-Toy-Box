@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleEngine.common
+namespace BattleEngine.main
 {
     public static class User
     {

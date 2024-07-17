@@ -37,40 +37,6 @@ namespace BattleEngine.common
 
                 MoveTotalIDs = basefile.MoveTotalIDs;
                 ActorTotalIDs = basefile.ActorTotalIDs;
-
-                foreach (string movepath in SchematicHandler.MoveFileList)
-                {
-                    Move currentmove = new Move(movepath, true);
-
-                    if (MoveIdList.Contains(currentmove.ID))
-                    {
-                        InvalidMoves.Add(currentmove.FileName, movepath);
-                        SchematicHandler.ActorList.Remove(currentmove.FileName);
-                    }
-                    else
-                    {
-                        MoveIdList.Add(currentmove.ID);
-                    }
-                }
-                foreach (string actorpath in SchematicHandler.ActorFileList)
-                {
-                    Actor currentactor = new Actor(actorpath, true);
-
-                    if (ActorIdList.Contains(currentactor.ID))
-                    {
-                        InvalidActors.Add(currentactor.FileName, actorpath);
-                        SchematicHandler.ActorList.Remove(currentactor.FileName);
-                    }
-                    else
-                    {
-                        ActorIdList.Add(currentactor.ID);
-                    }
-                }
-
-                MoveTotalIDs = MoveIdList.Max();
-                ActorTotalIDs = ActorIdList.Max();
-
-                SaveIDs();
             }
             else
             {
@@ -87,6 +53,43 @@ namespace BattleEngine.common
             string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
 
             File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
+        }
+
+        public static void SortIDs()
+        {
+            foreach (string movepath in SchematicHandler.MoveFileList)
+            {
+                Move currentmove = new Move(movepath, true);
+
+                if (MoveIdList.Contains(currentmove.ID))
+                {
+                    InvalidMoves.Add(currentmove.FileName, movepath);
+                    SchematicHandler.ActorList.Remove(currentmove.FileName);
+                }
+                else
+                {
+                    MoveIdList.Add(currentmove.ID);
+                }
+            }
+            foreach (string actorpath in SchematicHandler.ActorFileList)
+            {
+                Actor currentactor = new Actor(actorpath, true);
+
+                if (ActorIdList.Contains(currentactor.ID))
+                {
+                    InvalidActors.Add(currentactor.FileName, actorpath);
+                    SchematicHandler.ActorList.Remove(currentactor.FileName);
+                }
+                else
+                {
+                    ActorIdList.Add(currentactor.ID);
+                }
+            }
+
+            MoveTotalIDs = MoveIdList.Max();
+            ActorTotalIDs = ActorIdList.Max();
+
+            SaveIDs();
         }
 
         public static void ResetIDs()
@@ -162,7 +165,7 @@ namespace BattleEngine.common
         }
     }
 
-    public record IdSchematic
+    public record struct IdSchematic
     {
         public string Version;
         public int MoveTotalIDs;
@@ -171,7 +174,7 @@ namespace BattleEngine.common
 
         public IdSchematic()
         {
-            Version = "0.0.1";
+            Version = Global.Version;
             MoveTotalIDs = 0;
             ActorTotalIDs = 0;
             Message = "Do not delete this, it may cause problems in the indexing of actors and moves alike";

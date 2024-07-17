@@ -121,13 +121,13 @@ namespace BattleEngine.main
 
         public virtual void Trigger(Actor target, Actor user)
         {
-            double result = Power * user.Attributes["ATK"];
+            double result = Power * user.Attributes[1].Value;
             IsHurt.Invoke(this, result, target);
         }
     }
 
     //Json Schema
-    public struct MoveSchematic
+    public record struct MoveSchematic
     {
         public string Version;
 
@@ -143,7 +143,7 @@ namespace BattleEngine.main
 
         public MoveSchematic()
         {
-            Version = "0.0.1";
+            Version = Global.Version;
             ID = -1;
 
             FileName = "reference";
@@ -154,7 +154,7 @@ namespace BattleEngine.main
             Category = Categories.EFFECT;
             Components = new List<string>();
         }
-        public static explicit operator MoveSchematic(Move move)
+        public static implicit operator MoveSchematic(Move move)
         {
             MoveSchematic schema = new MoveSchematic();
 

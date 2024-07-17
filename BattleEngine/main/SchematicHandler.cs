@@ -24,8 +24,17 @@ namespace BattleEngine.main
             MoveFileList = new List<string>();
             ActorFileList = new List<string>();
 
-            //create folder structure,needs to be exacly here or earlier
             FolderStructurer.CreateStructure();
+
+            RefreshSchemas();
+
+            IdHandler.SortIDs();
+        }
+
+        public static void RefreshSchemas()
+        {
+            MoveFileList.Clear();
+            ActorFileList.Clear();
 
             MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
             ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));
@@ -43,7 +52,6 @@ namespace BattleEngine.main
                 ActorList.Add(currentactor.FileName, currentactor.FileName);
             }
         }
-
         public static void SaveSchema(MoveSchematic mov)
         {
             string Intermediary = JsonSerializer.Serialize(mov, Global.SchemaFormatter);

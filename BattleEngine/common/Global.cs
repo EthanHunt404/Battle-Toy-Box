@@ -12,24 +12,28 @@ namespace BattleEngine.common
 
         public static List<string> DefaultComponents { get; set; }
 
-        public static Dictionary<string, int> DefaultAttributes { get; set; }
+        public static List<StatAttribute> DefaultAttributes { get; set; }
+
+        public static string Version { get; set; }
 
         static Global()
-        {            
+        {
+            Version = "0.0.1";
+
             SchemaFormatter.WriteIndented = true;
             SchemaFormatter.IncludeFields = true;
             SchemaFormatter.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
             DefaultComponents = ["NONE", "NEUTRAL", "PHYSICAL", "SPECIAL"];
 
-            DefaultAttributes = new Dictionary<string, int>
-            {
-                ["ATK"] = 5 * 5,
-                ["VIT"] = 5 * 5,
-                ["INT"] = 5 * 5,
-                ["DEF"] = 5 * 5,
-                ["DGE"] = 5 * 5
-            };
+            DefaultAttributes =
+            [
+                new StatAttribute("Vitality", "VIT", 0),
+                new StatAttribute("Strenght", "STR", 0),
+                new StatAttribute("Defense", "DEF", 0),
+                new StatAttribute("Inteligence", "INT", 0),
+                new StatAttribute("Dexterity", "DEX", 0)
+            ];
         }
 
         public enum Values
