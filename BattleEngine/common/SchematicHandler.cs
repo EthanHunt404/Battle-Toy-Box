@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static BattleEngine.main.Schematics;
 
-namespace BattleEngine.main
+namespace BattleEngine.common
 {
     public static class SchematicHandler
     {
@@ -27,14 +28,15 @@ namespace BattleEngine.main
             FolderStructurer.CreateStructure();
 
             RefreshSchemas();
-
-            IdHandler.SortIDs();
         }
 
         public static void RefreshSchemas()
         {
             MoveFileList.Clear();
             ActorFileList.Clear();
+
+            MoveList.Clear();
+            ActorList.Clear();
 
             MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
             ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));
@@ -51,7 +53,10 @@ namespace BattleEngine.main
 
                 ActorList.Add(currentactor.FileName, currentactor.FileName);
             }
+
+            IdHandler.SortIDs();
         }
+
         public static void SaveSchema(MoveSchematic mov)
         {
             string Intermediary = JsonSerializer.Serialize(mov, Global.SchemaFormatter);

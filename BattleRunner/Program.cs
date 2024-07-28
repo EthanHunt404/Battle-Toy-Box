@@ -17,17 +17,23 @@ namespace BattleRunner
             FolderStructurer.CreateStructure();
             IdHandler.ResetIDs();
 
-            Move moveset = new Move("meatballsburp", "Meat Balls Burp", "I Shouldn't have put those onions in", 120, Categories.AOE, DefaultComponents[3]);
-            Move moveset2 = new Move("testiculartorsion", "Torçao Testicular", "Ouch", 200, Categories.RANGED, DefaultComponents[2]);
+            double[] moveratios = [0, 1.0, 0, 0, 0];
+            double[] actorratios = [1.0, 1.0, 1.0, 1.0];
 
-            Actor actor = new Actor("garpend", "Garpend The Spaghetti Devourer", 100, moveset);
-            Actor actor2 = new Actor("sansadventuretime", "Sans Adventure Time", 100, moveset2);
+            Move move = new Move("testiculartorsion", "Torçao Testicular", "Ouch", 120, Categories.RANGED, moveratios, ListOfComponents[1]);
+            
+            Actor actor = new Actor("sansadventuretime", "Sans Adventure Time", 10, move);
+            
+            Actor victim = new Actor("garpend", "Garpend The Spaghetti Devourer", 100, actorratios, new Move());
+
+            Console.WriteLine(victim.Health);
+
+            actor.Attack(0, victim);
+
+            Console.WriteLine(victim.Health);
 
             SchematicHandler.SaveSchema(actor);
-            SchematicHandler.SaveSchema(moveset);
-
-            SchematicHandler.SaveSchema(actor2);
-            SchematicHandler.SaveSchema(moveset2);
+            SchematicHandler.SaveSchema(move);
         }
     }
 }

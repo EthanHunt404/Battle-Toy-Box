@@ -1,8 +1,10 @@
 ﻿using System.IO;
 using System.Text.Json;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using static BattleEngine.common.Global;
 using static BattleEngine.main.Move;
+using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.main
 {
@@ -16,12 +18,18 @@ namespace BattleEngine.main
         public double MaxHealth
         {
             get { return _maxhp; }
-            private set{
-                if (value <= 1){
+            private set
+            {
+                if (value <= 1)
+                {
                     _maxhp = 1;
-                }else if (value > (double)Values.HEALTHCAP){
-                    _maxhp = (double)Values.HEALTHCAP;
-                }else{
+                }
+                else if (value > (double)Limits.HEALTHCAP)
+                {
+                    _maxhp = (double)Limits.HEALTHCAP;
+                }
+                else
+                {
                     _maxhp = value;
                 }
             }
@@ -74,9 +82,9 @@ namespace BattleEngine.main
                 {
                     _level = 1;
                 }
-                else if (value > (int)Values.LEVELCAP)
+                else if (value > (int)Limits.LEVELCAP)
                 {
-                    _level = (int)Values.LEVELCAP;
+                    _level = (int)Limits.LEVELCAP;
                 }
                 else
                 {
@@ -86,6 +94,7 @@ namespace BattleEngine.main
         }
 
         public List<StatAttribute> Attributes { get; private set; }
+        public Dictionary<string, double> ComponentRatios { get; private set; }
         public List<Move> MoveSet { get; set; }
 
         public Actor()
@@ -97,13 +106,25 @@ namespace BattleEngine.main
 
             Level = 5;
 
-            MaxHealth = 100 * Level;
+            MaxHealth = 500 * Level;
             Health = MaxHealth;
 
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new List<StatAttribute>(DefaultAttributes);
+            Attributes = new List<StatAttribute>(ListOfAttributes);
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                StatAttribute item = Attributes[i];
+                item.Value = 5 * Level;
+                Attributes[i] = item;
+            }
+
+            ComponentRatios = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfComponents.Count; i++)
+            {
+                ComponentRatios.Add(ListOfComponents[i], 1.0);
+            }
 
             MoveSet = [new Move()];
         }
@@ -116,18 +137,29 @@ namespace BattleEngine.main
 
             Level = lvl;
 
-            MaxHealth = 100 * Level;
+            MaxHealth = 500 * Level;
             Health = MaxHealth;
 
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new List<StatAttribute>(DefaultAttributes);
-            Attributes.ForEach(item => item.Value = 5 * Level);
+            Attributes = new List<StatAttribute>(ListOfAttributes);
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                StatAttribute item = Attributes[i];
+                item.Value = 5 * Level;
+                Attributes[i] = item;
+            }
+
+            ComponentRatios = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfComponents.Count; i++)
+            {
+                ComponentRatios.Add(ListOfComponents[i], 1.0);
+            }
 
             MoveSet = new List<Move>(moves);
         }
-        public Actor(string filename, string displayname, int lvl, List<StatAttribute> attributes, params Move[] moves)
+        public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
         {
             ID = IdHandler.GetID(this);
 
@@ -136,13 +168,25 @@ namespace BattleEngine.main
 
             Level = lvl;
 
-            MaxHealth = 100 * Level;
+            MaxHealth = 500 * Level;
             Health = MaxHealth;
 
             MitigationValue = 0;
             IsHurt += Mitigate;
 
-            Attributes = new List<StatAttribute>(attributes);
+            Attributes = new List<StatAttribute>(ListOfAttributes);
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                StatAttribute item = Attributes[i];
+                item.Value = 5 * Level;
+                Attributes[i] = item;
+            }
+
+            ComponentRatios = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfComponents.Count; i++)
+            {
+                ComponentRatios.Add(ListOfComponents[i], ratios[i]);
+            }
 
             MoveSet = new List<Move>(moves);
         }
@@ -178,7 +222,7 @@ namespace BattleEngine.main
                 IsHurt += Mitigate;
 
                 Attributes = new List<StatAttribute>(origin.Attributes);
-
+                ComponentRatios = new Dictionary<string, double>(origin.ComponentRatios);
                 MoveSet = new List<Move>(origin.MoveSet);
             }
             else
@@ -197,6 +241,7 @@ namespace BattleEngine.main
             actor.Level = schema.Level;
             actor.MaxHealth = schema.MaxHealth;
             actor.Attributes = schema.Attributes;
+            actor.ComponentRatios = schema.ComponentRatios;
             actor.MoveSet = schema.MoveSet;
 
             return actor;
@@ -209,18 +254,18 @@ namespace BattleEngine.main
             Health = MaxHealth;
         }
 
-        public virtual void Mitigate(Move move, double result, Actor target)
+        public virtual void Mitigate(Move move, double result, Actor itself)
         {
-            if (target == this)
+            if (itself == this)
             {
-                if (move.Components.Contains(DefaultComponents[1]))
+                int TotalComponents = move.Components.Count;
+
+                foreach (string component in move.Components)
                 {
-                    MitigationValue = result - (Attributes[2].Value + Attributes[0].Value);
+                    double fraction = result / TotalComponents;
+                    MitigationValue += fraction * ComponentRatios[component];
                 }
-                else
-                {
-                    MitigationValue = result;
-                }
+
                 Health -= MitigationValue;
             }
         }
@@ -228,59 +273,6 @@ namespace BattleEngine.main
         public virtual void Attack(int move, Actor target)
         {
             MoveSet[move].Trigger(target, this);
-        }
-    }
-
-    //Json Schema
-    public record struct ActorSchematic
-    {
-        public string Version;
-
-        public int ID;
-
-        public string FileName;
-        public string DisplayName;
-
-        public double MaxHealth;
-
-        public int Level;
-
-        public List<StatAttribute> Attributes;
-        public List<Move> MoveSet;
-
-        public ActorSchematic()
-        {
-            Version = Global.Version;
-            ID = -1;
-
-            FileName = $"reference";
-            DisplayName = "Actor Schematic";
-
-            MaxHealth = -1;
-
-            Level = -1;
-
-            Attributes = new List<StatAttribute>();
-            MoveSet = new List<Move>();
-        }
-
-        public static implicit operator ActorSchematic(Actor actor)
-        {
-            ActorSchematic schema = new ActorSchematic();
-
-            schema.ID = actor.ID;
-            schema.FileName = actor.FileName;
-            schema.DisplayName = actor.DisplayName;
-            schema.Level = actor.Level;
-            schema.MaxHealth = actor.MaxHealth;
-            schema.Attributes = actor.Attributes;
-
-            foreach (Move move in actor.MoveSet)
-            {
-                schema.MoveSet.Add(move);
-            }
-
-            return schema;
         }
     }
 }

@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static BattleEngine.main.Schematics;
 
-namespace BattleEngine.common
+namespace BattleEngine.main
 {
     public static class IdHandler
     {
@@ -24,8 +25,8 @@ namespace BattleEngine.common
             MoveIdList = new List<int>();
             ActorIdList = new List<int>();
 
-            InvalidActors = new Dictionary<string, string>();
             InvalidMoves = new Dictionary<string, string>();
+            InvalidActors = new Dictionary<string, string>();
 
             MoveTotalIDs = 0;
             ActorTotalIDs = 0;
@@ -33,10 +34,12 @@ namespace BattleEngine.common
             if (File.Exists(User.SchematicPath + @"/base.json"))
             {
                 string JsonString = File.ReadAllText(User.SchematicPath + @"/base.json");
-                IdSchematic basefile = JsonSerializer.Deserialize<IdSchematic>(JsonString, Global.SchemaFormatter);
+                IdFileSchematic basefile = JsonSerializer.Deserialize<IdFileSchematic>(JsonString, Global.SchemaFormatter);
 
                 MoveTotalIDs = basefile.MoveTotalIDs;
                 ActorTotalIDs = basefile.ActorTotalIDs;
+
+                SortIDs();
             }
             else
             {
@@ -46,7 +49,7 @@ namespace BattleEngine.common
 
         private static void SaveIDs()
         {
-            IdSchematic idschema = new IdSchematic();
+            IdFileSchematic idschema = new IdFileSchematic();
             idschema.MoveTotalIDs = MoveTotalIDs;
             idschema.ActorTotalIDs = ActorTotalIDs;
 
@@ -57,6 +60,12 @@ namespace BattleEngine.common
 
         public static void SortIDs()
         {
+            MoveIdList.Clear();
+            ActorIdList.Clear();
+
+            InvalidMoves.Clear();
+            InvalidActors.Clear();
+
             foreach (string movepath in SchematicHandler.MoveFileList)
             {
                 Move currentmove = new Move(movepath, true);
@@ -94,13 +103,9 @@ namespace BattleEngine.common
 
         public static void ResetIDs()
         {
-            IdSchematic idschema = new IdSchematic();
-            idschema.ActorTotalIDs = 0;
-            idschema.MoveTotalIDs = 0;
-
-            string Intermediary = JsonSerializer.Serialize(idschema, Global.SchemaFormatter);
-
-            File.WriteAllText(User.SchematicPath + $@"\base.json", Intermediary);
+            ActorTotalIDs = 0;
+            MoveTotalIDs = 0;
+            SaveIDs();
         }
 
         public static int GetID(Move asker)
@@ -162,22 +167,6 @@ namespace BattleEngine.common
 
                 return current;
             }
-        }
-    }
-
-    public record struct IdSchematic
-    {
-        public string Version;
-        public int MoveTotalIDs;
-        public int ActorTotalIDs;
-        public string Message;
-
-        public IdSchematic()
-        {
-            Version = Global.Version;
-            MoveTotalIDs = 0;
-            ActorTotalIDs = 0;
-            Message = "Do not delete this, it may cause problems in the indexing of actors and moves alike";
         }
     }
 }

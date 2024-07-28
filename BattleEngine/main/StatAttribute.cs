@@ -8,8 +8,8 @@ namespace BattleEngine.main
 {
     public record struct StatAttribute
     {
-        public string Name { get; set; }
-        public string Acronym { get; set; }
+        public string Name { get; private set; }
+        public string Acronym { get; private set; }
 
         private int _value;
         public int Value {
@@ -19,9 +19,9 @@ namespace BattleEngine.main
             } 
             set 
             {
-                if (value > (int)Global.Values.STATCAP)
+                if (value > (int)Global.Limits.STATCAP)
                 {
-                    _value = (int)Global.Values.STATCAP;
+                    _value = (int)Global.Limits.STATCAP;
                 }
                 else if (value < 0)
                 {
@@ -34,10 +34,10 @@ namespace BattleEngine.main
             } 
         }
 
-        public StatAttribute(string name, string acronym, int value)
+        public StatAttribute(string name, int value)
         {
             Name = name;
-            Acronym = acronym;
+            Acronym = name.Substring(0, 3).ToUpper();
             Value = value;
         }
     }

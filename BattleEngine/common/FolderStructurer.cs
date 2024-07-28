@@ -13,11 +13,11 @@ namespace BattleEngine.common
             Directory.CreateDirectory(User.SchematicPath);
 
             Directory.CreateDirectory(User.MovePath);
-            MoveSchematic movereference = new MoveSchematic();
+            Schematics.MoveSchematic movereference = new Schematics.MoveSchematic();
             SchematicHandler.SaveSchema(movereference);
 
             Directory.CreateDirectory(User.ActorPath);
-            ActorSchematic actorreference = new ActorSchematic();
+            Schematics.ActorSchematic actorreference = new Schematics.ActorSchematic();
             SchematicHandler.SaveSchema(actorreference);
         }
     }

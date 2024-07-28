@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Xml.Linq;
 using static BattleEngine.common.Global;
+using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.main
 {
@@ -18,9 +19,9 @@ namespace BattleEngine.main
             get { return _power; }
             set
             {
-                if (value > (int)Values.POWERCAP)
+                if (value > (int)Limits.POWERCAP)
                 {
-                    _power = (int)Values.POWERCAP;
+                    _power = (int)Limits.POWERCAP;
                 }
                 else if (value < 0)
                 {
@@ -38,6 +39,7 @@ namespace BattleEngine.main
 
         public Categories Category { get; set; }
         public List<string> Components { get; set; }
+        public Dictionary<string, double> AttributeRatioes { get; set; }
 
         public Move()
         {
@@ -50,9 +52,16 @@ namespace BattleEngine.main
             Power = 10;
             Category = Categories.MELEE;
 
-            Components = [DefaultComponents[1]];
+            Components = [ListOfComponents[1]];
+
+            AttributeRatioes = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfAttributes.Count; i++)
+            {
+                AttributeRatioes.Add(ListOfAttributes[i].Name.ToUpper(), 0);
+            }
+            AttributeRatioes[ListOfAttributes[1].Name] = 1.0;
         }
-        public Move(string filename, string displayname, string description, int power, Categories category, params string[] components)
+        public Move(string filename, string displayname, string description, int power, Categories category, double[] ratioes, params string[] components)
         {
             ID = IdHandler.GetID(this);
 
@@ -64,7 +73,16 @@ namespace BattleEngine.main
             Category = category;
 
             Components = new List<string>(components);
-            Components.ForEach(item => { item.ToUpper(); });
+            foreach (string item in components)
+            {
+                item.ToUpper();
+            }
+
+            AttributeRatioes = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfAttributes.Count; i++)
+            {
+                AttributeRatioes.Add(ListOfAttributes[i].Name.ToUpper(), ratioes[i]);
+            }
         }
         public Move(string name, bool isfile)
         {
@@ -94,7 +112,12 @@ namespace BattleEngine.main
                 Category = origin.Category;
                 
                 Components = new List<string>(origin.Components);
-                Components.ForEach(item => { item.ToUpper(); });
+                foreach (string item in Components)
+                {
+                    item.ToUpper();
+                }
+
+                AttributeRatioes = new Dictionary<string, double>(origin.AttributeRatioes);
             }
             else
             {
@@ -115,60 +138,27 @@ namespace BattleEngine.main
             move.Power = schema.Power;
             move.Category = schema.Category;
             move.Components = schema.Components;
+            move.AttributeRatioes = schema.AttributeRatioes;
 
             return move;
         }
 
         public virtual void Trigger(Actor target, Actor user)
         {
-            double result = Power * user.Attributes[1].Value;
+            double result = 0;
+            double multiplier = 0;
+
+            for (int i = 0; i < user.Attributes.Count; i++)
+            {
+                string currentstatname = user.Attributes[i].Name.ToUpper();
+                if (AttributeRatioes.ContainsKey(currentstatname) && AttributeRatioes[currentstatname] != 0)
+                {
+                    multiplier += user.Attributes[i].Value * AttributeRatioes[currentstatname];
+                }
+            }
+
+            result = Power * multiplier;
             IsHurt.Invoke(this, result, target);
-        }
-    }
-
-    //Json Schema
-    public record struct MoveSchematic
-    {
-        public string Version;
-
-        public int ID;
-        public string FileName;
-
-        public string DisplayName;
-        public string Description;
-
-        public int Power;
-        public Categories Category;
-        public List<string> Components;
-
-        public MoveSchematic()
-        {
-            Version = Global.Version;
-            ID = -1;
-
-            FileName = "reference";
-            DisplayName = "Move Schematic";
-            Description = "Empty";
-
-            Power = -1;
-            Category = Categories.EFFECT;
-            Components = new List<string>();
-        }
-        public static implicit operator MoveSchematic(Move move)
-        {
-            MoveSchematic schema = new MoveSchematic();
-
-            schema.ID = move.ID;
-            schema.FileName = move.FileName;
-
-            schema.DisplayName = move.DisplayName;
-            schema.Description = move.Description;
-
-            schema.Power = move.Power;
-            schema.Category = move.Category;
-            schema.Components = move.Components;
-
-            return schema;
         }
     }
 }

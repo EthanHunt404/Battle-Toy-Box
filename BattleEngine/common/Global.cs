@@ -10,9 +10,9 @@ namespace BattleEngine.common
     {
         public static JsonSerializerOptions SchemaFormatter = new JsonSerializerOptions();
 
-        public static List<string> DefaultComponents { get; set; }
+        public static List<string> ListOfComponents { get; set; }
 
-        public static List<StatAttribute> DefaultAttributes { get; set; }
+        public static List<StatAttribute> ListOfAttributes { get; set; }
 
         public static string Version { get; set; }
 
@@ -24,19 +24,19 @@ namespace BattleEngine.common
             SchemaFormatter.IncludeFields = true;
             SchemaFormatter.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 
-            DefaultComponents = ["NONE", "NEUTRAL", "PHYSICAL", "SPECIAL"];
+            ListOfComponents = ["NEUTRAL", "PHYSICAL", "SPECIAL", "MIXED"];
 
-            DefaultAttributes =
+            ListOfAttributes =
             [
-                new StatAttribute("Vitality", "VIT", 0),
-                new StatAttribute("Strenght", "STR", 0),
-                new StatAttribute("Defense", "DEF", 0),
-                new StatAttribute("Inteligence", "INT", 0),
-                new StatAttribute("Dexterity", "DEX", 0)
+                new StatAttribute("Vitality", 0),
+                new StatAttribute("Strenght", 0),
+                new StatAttribute("Defense", 0),
+                new StatAttribute("Inteligence", 0),
+                new StatAttribute("Dexterity", 0)
             ];
         }
 
-        public enum Values
+        public enum Limits
         {
             HEALTHCAP = 75000,
             POWERCAP = 200,
