@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.common
 {
@@ -13,12 +14,16 @@ namespace BattleEngine.common
             Directory.CreateDirectory(User.SchematicPath);
 
             Directory.CreateDirectory(User.MovePath);
-            Schematics.MoveSchematic movereference = new Schematics.MoveSchematic();
+            MoveSchematic movereference = new MoveSchematic();
             SchematicHandler.SaveSchema(movereference);
 
             Directory.CreateDirectory(User.ActorPath);
-            Schematics.ActorSchematic actorreference = new Schematics.ActorSchematic();
+            ActorSchematic actorreference = new ActorSchematic();
             SchematicHandler.SaveSchema(actorreference);
+
+            Directory.CreateDirectory(User.EnemyPath);
+            EnemySchematic enemyreference = new EnemySchematic();
+            SchematicHandler.SaveSchema(enemyreference);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace BattleEngine.main
             public string Version;
             public int MoveTotalIDs;
             public int ActorTotalIDs;
+            public int EnemyTotalIDs;
             public string Message;
 
             public IdFileSchematic()
@@ -22,6 +23,7 @@ namespace BattleEngine.main
                 Version = Global.Version;
                 MoveTotalIDs = 0;
                 ActorTotalIDs = 0;
+                EnemyTotalIDs = 0;
                 Message = "Do not delete this, it may cause problems in the indexing of actors and moves alike";
             }
         }   
@@ -123,6 +125,62 @@ namespace BattleEngine.main
                 schema.ComponentRatios = actor.ComponentRatios;
 
                 foreach (Move move in actor.MoveSet)
+                {
+                    schema.MoveSet.Add(move);
+                }
+
+                return schema;
+            }
+        }
+
+        //Enemy Schematic
+        public record struct EnemySchematic
+        {
+            public string Version;
+
+            public int ID;
+
+            public string FileName;
+            public string DisplayName;
+
+            public double MaxHealth;
+
+            public int Level;
+
+            public List<StatAttribute> Attributes;
+            public Dictionary<string, double> ComponentRatios;
+            public List<Move> MoveSet;
+
+            public EnemySchematic()
+            {
+                Version = Global.Version;
+                ID = -1;
+
+                FileName = $"reference";
+                DisplayName = "Enemy Schematic";
+
+                MaxHealth = -1;
+
+                Level = -1;
+
+                Attributes = new List<StatAttribute>();
+                ComponentRatios = new Dictionary<string, double>();
+                MoveSet = new List<Move>();
+            }
+
+            public static implicit operator EnemySchematic(Enemy enemy)
+            {
+                EnemySchematic schema = new EnemySchematic();
+
+                schema.ID = enemy.ID;
+                schema.FileName = enemy.FileName;
+                schema.DisplayName = enemy.DisplayName;
+                schema.Level = enemy.Level;
+                schema.MaxHealth = enemy.MaxHealth;
+                schema.Attributes = enemy.Attributes;
+                schema.ComponentRatios = enemy.ComponentRatios;
+
+                foreach (Move move in enemy.MoveSet)
                 {
                     schema.MoveSet.Add(move);
                 }

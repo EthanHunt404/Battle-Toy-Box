@@ -17,13 +17,19 @@ namespace BattleEngine.common
         public static List<string> ActorFileList { get; private set; }
         public static Dictionary<string, string> ActorList { get; private set; }
 
+        public static List<string> EnemyFileList { get; private set; }
+        public static Dictionary<string, string> EnemyList { get; private set; }
+
         static SchematicHandler()
         {
             MoveList = new Dictionary<string, string>();
+            MoveFileList = new List<string>();
+
+            ActorFileList = new List<string>();
             ActorList = new Dictionary<string, string>();
 
-            MoveFileList = new List<string>();
-            ActorFileList = new List<string>();
+            EnemyFileList = new List<string>();
+            EnemyList = new Dictionary<string, string>();
 
             FolderStructurer.CreateStructure();
 
@@ -33,13 +39,14 @@ namespace BattleEngine.common
         public static void RefreshSchemas()
         {
             MoveFileList.Clear();
-            ActorFileList.Clear();
-
             MoveList.Clear();
+
+            ActorFileList.Clear();
             ActorList.Clear();
 
             MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
             ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));
+            EnemyFileList.AddRange(Directory.EnumerateFiles(User.EnemyPath));
 
             foreach (string movepath in MoveFileList)
             {
@@ -51,23 +58,35 @@ namespace BattleEngine.common
             {
                 Actor currentactor = new Actor(actorpath, true);
 
-                ActorList.Add(currentactor.FileName, currentactor.FileName);
+                ActorList.Add(currentactor.FileName, actorpath);
+            }
+            foreach (string enemypath in EnemyFileList)
+            {
+                Enemy currentenemy = new Enemy(enemypath, true);
+
+                EnemyList.Add(currentenemy.FileName, enemypath);
             }
 
             IdHandler.SortIDs();
         }
 
-        public static void SaveSchema(MoveSchematic mov)
+        public static void SaveSchema(MoveSchematic schema)
         {
-            string Intermediary = JsonSerializer.Serialize(mov, Global.SchemaFormatter);
+            string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
-            File.WriteAllText(User.MovePath + $@"\{mov.FileName.ToLower()}.json", Intermediary);
+            File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
         public static void SaveSchema(ActorSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
+        }
+        public static void SaveSchema(EnemySchematic schema)
+        {
+            string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
+
+            File.WriteAllText(User.EnemyPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
     }
 }

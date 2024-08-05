@@ -15,14 +15,13 @@ namespace BattleRunner
         public static void Main()
         {
             FolderStructurer.CreateStructure();
-            IdHandler.ResetIDs();
 
             double[] moveratios = [0, 1.0, 0, 0, 0];
             double[] actorratios = [1.0, 1.0, 1.0, 1.0];
 
             Move move = new Move("testiculartorsion", "Torçao Testicular", "Ouch", 120, Categories.RANGED, moveratios, ListOfComponents[1]);
             
-            Actor actor = new Actor("sansadventuretime", "Sans Adventure Time", 10, move);
+            Actor actor = new Actor("sansadventuretime", "Sans Adventure Time", 10, [1.0, 1.0, 1.0, 1.0], move);
             
             Actor victim = new Actor("garpend", "Garpend The Spaghetti Devourer", 100, actorratios, new Move());
 
@@ -34,6 +33,8 @@ namespace BattleRunner
 
             SchematicHandler.SaveSchema(actor);
             SchematicHandler.SaveSchema(move);
+
+            IdHandler.ResetIDs();
         }
     }
 }

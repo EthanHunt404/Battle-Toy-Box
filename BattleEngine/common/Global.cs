@@ -38,10 +38,12 @@ namespace BattleEngine.common
 
         public enum Limits
         {
-            HEALTHCAP = 75000,
+            HEALTHCAP = 50000,
+            ENEMYHEALTHCAP = 200000,
+            STATCAP = 100,
+            ENEMYSTATCAP = 200,
             POWERCAP = 200,
-            LEVELCAP = 100,
-            STATCAP = 500
+            LEVELCAP = 100
         }
         public enum Categories
         {
@@ -49,6 +51,13 @@ namespace BattleEngine.common
             MELEE = 1,
             RANGED = 2,
             AOE = 3
+        }
+        public enum EnemyAITypes
+        {
+            WILD = 0,
+            AGRESSIVE = 1,
+            SURVIVALIST = 2,
+            TATICAL = 3
         }
     }
 }

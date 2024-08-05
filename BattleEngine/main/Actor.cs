@@ -10,15 +10,15 @@ namespace BattleEngine.main
 {
     public record Actor
     {
-        public int ID { get; private set; }
-        public string FileName { get; private set; }
+        public int ID { get; protected set; }
+        public string FileName { get; protected set; }
         public string DisplayName { get; set; }
 
         private double _maxhp;
-        public double MaxHealth
+        public virtual double MaxHealth
         {
             get { return _maxhp; }
-            private set
+            protected set
             {
                 if (value <= 1)
                 {
@@ -39,7 +39,7 @@ namespace BattleEngine.main
         public double Health
         {
             get { return _health; }
-            private set
+            protected set
             {
                 if (value < 0)
                 {
@@ -56,7 +56,7 @@ namespace BattleEngine.main
         public double MitigationValue
         {
             get { return _mitigationvalue; }
-            private set
+            protected set
             {
                 if (_mitigationvalue < 0)
                 {
@@ -76,7 +76,7 @@ namespace BattleEngine.main
         private int _level;
         public int Level {
             get { return _level; }
-            private set
+            protected set
             {
                 if (value <= 1)
                 {
@@ -93,8 +93,8 @@ namespace BattleEngine.main
             }
         }
 
-        public List<StatAttribute> Attributes { get; private set; }
-        public Dictionary<string, double> ComponentRatios { get; private set; }
+        public List<StatAttribute> Attributes { get; set; }
+        public Dictionary<string, double> ComponentRatios { get; protected set; }
         public List<Move> MoveSet { get; set; }
 
         public Actor()
@@ -106,12 +106,6 @@ namespace BattleEngine.main
 
             Level = 5;
 
-            MaxHealth = 500 * Level;
-            Health = MaxHealth;
-
-            MitigationValue = 0;
-            IsHurt += Mitigate;
-
             Attributes = new List<StatAttribute>(ListOfAttributes);
             for (int i = 0; i < Attributes.Count; i++)
             {
@@ -125,39 +119,14 @@ namespace BattleEngine.main
             {
                 ComponentRatios.Add(ListOfComponents[i], 1.0);
             }
+
+            MaxHealth = 500 * Attributes[0].Value;
+            Health = MaxHealth;
 
             MoveSet = [new Move()];
-        }
-        public Actor(string filename, string displayname, int lvl, params Move[] moves)
-        {
-            ID = IdHandler.GetID(this);
-
-            FileName = filename.ToLower();
-            DisplayName = displayname;
-
-            Level = lvl;
-
-            MaxHealth = 500 * Level;
-            Health = MaxHealth;
 
             MitigationValue = 0;
             IsHurt += Mitigate;
-
-            Attributes = new List<StatAttribute>(ListOfAttributes);
-            for (int i = 0; i < Attributes.Count; i++)
-            {
-                StatAttribute item = Attributes[i];
-                item.Value = 5 * Level;
-                Attributes[i] = item;
-            }
-
-            ComponentRatios = new Dictionary<string, double>();
-            for (int i = 0; i < ListOfComponents.Count; i++)
-            {
-                ComponentRatios.Add(ListOfComponents[i], 1.0);
-            }
-
-            MoveSet = new List<Move>(moves);
         }
         public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
         {
@@ -167,12 +136,6 @@ namespace BattleEngine.main
             DisplayName = displayname;
 
             Level = lvl;
-
-            MaxHealth = 500 * Level;
-            Health = MaxHealth;
-
-            MitigationValue = 0;
-            IsHurt += Mitigate;
 
             Attributes = new List<StatAttribute>(ListOfAttributes);
             for (int i = 0; i < Attributes.Count; i++)
@@ -188,7 +151,13 @@ namespace BattleEngine.main
                 ComponentRatios.Add(ListOfComponents[i], ratios[i]);
             }
 
+            MaxHealth = 500 * Attributes[0].Value;
+            Health = MaxHealth;
+
             MoveSet = new List<Move>(moves);
+
+            MitigationValue = 0;
+            IsHurt += Mitigate;
         }
         public Actor(string name, bool isfile)
         {
@@ -254,7 +223,7 @@ namespace BattleEngine.main
             Health = MaxHealth;
         }
 
-        public virtual void Mitigate(Move move, double result, Actor itself)
+        public void Mitigate(Move move, double result, Actor itself)
         {
             if (itself == this)
             {
@@ -270,7 +239,7 @@ namespace BattleEngine.main
             }
         }
 
-        public virtual void Attack(int move, Actor target)
+        public void Attack(int move, Actor target)
         {
             MoveSet[move].Trigger(target, this);
         }
