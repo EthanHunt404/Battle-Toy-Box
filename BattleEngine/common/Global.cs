@@ -1,4 +1,5 @@
-﻿using System.Reflection.Emit;
+﻿using System.Globalization;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -13,6 +14,8 @@ namespace BattleEngine.common
         public static List<string> ListOfComponents { get; set; }
 
         public static List<StatAttribute> ListOfAttributes { get; set; }
+
+        public static List<Move> ListOfTestingMoves { get; set; }
 
         public static string Version { get; set; }
 
@@ -34,6 +37,12 @@ namespace BattleEngine.common
                 new StatAttribute("Inteligence", 0),
                 new StatAttribute("Dexterity", 0)
             ];
+
+            foreach (string component in ListOfComponents)
+            {
+                ListOfTestingMoves.Add(new Move($"{component.ToLower()}_punch", $"{component} PUNCH!", "It is an Awesome Punch", 
+                    50, Categories.MELEE, [0, 1.0, 0, 0, 0], component));
+            }
         }
 
         public enum Limits
