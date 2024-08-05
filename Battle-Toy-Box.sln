@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleRunner", "BattleRunner\BattleRunner.csproj", "{225005E0-1F75-4541-B46C-FCAE765FC33C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleSimulator", "BattleSimulator\BattleSimulator.csproj", "{1536BC8E-6585-4070-B4B6-F6A15B439508}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6DF9ADF1-8D5E-4775-AC39-AF931793DF8D} = {6DF9ADF1-8D5E-4775-AC39-AF931793DF8D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
