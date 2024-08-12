@@ -16,25 +16,18 @@ namespace BattleRunner
         {
             FolderStructurer.CreateStructure();
 
-            double[] moveratios = [0, 1.0, 0, 0, 0];
-            double[] actorratios = [1.0, 1.0, 1.0, 1.0];
+            Move move1 = new Move("katana_slash", "Katana Slash", "A Cool Slash", 50, Categories.MELEE, [0, 1.0, 0, 0 ,1.0], ListOfComponents[1]);
+            Actor actor1 = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], move1);
 
-            Move move = new Move("testiculartorsion", "Torçao Testicular", "Ouch", 120, Categories.RANGED, moveratios, ListOfComponents[1]);
-            
-            Actor actor = new Actor("sansadventuretime", "Sans Adventure Time", 10, [1.0, 1.0, 1.0, 1.0], move);
-            
-            Actor victim = new Actor("garpend", "Garpend The Spaghetti Devourer", 100, actorratios, new Move());
+            Actor actor2 = new Actor();
 
-            Console.WriteLine(victim.Health);
+            Console.WriteLine(actor2.Health);
 
-            actor.Attack(0, victim);
+            actor1.Attack(0, actor2);
 
-            Console.WriteLine(victim.Health);
+            Console.WriteLine(actor2.Health);
 
-            SchematicHandler.SaveSchema(actor);
-            SchematicHandler.SaveSchema(move);
-
-            IdHandler.ResetIDs();
+            SchematicHandler.SaveSchematic(actor1);
         }
     }
 }

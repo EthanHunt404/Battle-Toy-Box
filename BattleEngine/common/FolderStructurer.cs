@@ -15,15 +15,15 @@ namespace BattleEngine.common
 
             Directory.CreateDirectory(User.MovePath);
             MoveSchematic movereference = new MoveSchematic();
-            SchematicHandler.SaveSchema(movereference);
+            SchematicHandler.SaveSchematic(movereference);
 
             Directory.CreateDirectory(User.ActorPath);
             ActorSchematic actorreference = new ActorSchematic();
-            SchematicHandler.SaveSchema(actorreference);
+            SchematicHandler.SaveSchematic(actorreference);
 
             Directory.CreateDirectory(User.EnemyPath);
             EnemySchematic enemyreference = new EnemySchematic();
-            SchematicHandler.SaveSchema(enemyreference);
+            SchematicHandler.SaveSchematic(enemyreference);
         }
     }
 }

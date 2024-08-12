@@ -38,6 +38,8 @@ namespace BattleEngine.common
                 new StatAttribute("Dexterity", 0)
             ];
 
+            ListOfTestingMoves = new List<Move>();
+
             foreach (string component in ListOfComponents)
             {
                 ListOfTestingMoves.Add(new Move($"{component.ToLower()}_punch", $"{component} PUNCH!", "It is an Awesome Punch", 

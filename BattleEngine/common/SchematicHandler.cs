@@ -33,10 +33,10 @@ namespace BattleEngine.common
 
             FolderStructurer.CreateStructure();
 
-            RefreshSchemas();
+            RefreshSchematics();
         }
 
-        public static void RefreshSchemas()
+        public static void RefreshSchematics()
         {
             MoveFileList.Clear();
             MoveList.Clear();
@@ -70,19 +70,19 @@ namespace BattleEngine.common
             IdHandler.SortIDs();
         }
 
-        public static void SaveSchema(MoveSchematic schema)
+        public static void SaveSchematic(MoveSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
-        public static void SaveSchema(ActorSchematic schema)
+        public static void SaveSchematic(ActorSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
-        public static void SaveSchema(EnemySchematic schema)
+        public static void SaveSchematic(EnemySchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
