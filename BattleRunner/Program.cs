@@ -15,6 +15,7 @@ namespace BattleRunner
         public static void Main()
         {
             FolderStructurer.CreateStructure();
+            IdHandler.ResetIDs();
 
             Move move1 = new Move("katana_slash", "Katana Slash", "A Cool Slash", 50, Categories.MELEE, [0, 1.0, 0, 0 ,1.0], ListOfComponents[1]);
             Actor actor1 = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], move1);

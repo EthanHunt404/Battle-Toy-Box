@@ -34,7 +34,7 @@ namespace BattleEngine.main
             }
         }
 
-        public delegate void DamageHandler(Move move, double result, Actor target);
+        public delegate void DamageHandler(Move move, double result, params Actor[] targets);
         public static event DamageHandler IsHurt;
 
         public Categories Category { get; set; }
@@ -143,7 +143,7 @@ namespace BattleEngine.main
             return move;
         }
 
-        public virtual void Trigger(Actor target, Actor user)
+        public virtual void Trigger(Actor user, params Actor[] targets)
         {
             double result = 0;
             double multiplier = 0;
@@ -158,7 +158,7 @@ namespace BattleEngine.main
             }
 
             result = Power * multiplier;
-            IsHurt.Invoke(this, result, target);
+            IsHurt.Invoke(this, result, targets);
         }
     }
 }

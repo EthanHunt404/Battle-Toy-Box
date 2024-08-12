@@ -120,7 +120,7 @@ namespace BattleEngine.main
                 ComponentRatios.Add(ListOfComponents[i], 1.0);
             }
 
-            MaxHealth = 500 * Attributes[0].Value;
+            MaxHealth = 100 * Attributes[0].Value;
             Health = MaxHealth;
 
             MoveSet = [new Move()];
@@ -151,7 +151,7 @@ namespace BattleEngine.main
                 ComponentRatios.Add(ListOfComponents[i], ratios[i]);
             }
 
-            MaxHealth = 500 * Attributes[0].Value;
+            MaxHealth = 100 * Attributes[0].Value;
             Health = MaxHealth;
 
             MoveSet = new List<Move>(moves);
@@ -223,9 +223,9 @@ namespace BattleEngine.main
             Health = MaxHealth;
         }
 
-        public void Mitigate(Move move, double result, Actor itself)
+        public void Mitigate(Move move, double result, params Actor[] targets)
         {
-            if (itself == this)
+            if (targets.Contains(this))
             {
                 int TotalComponents = move.Components.Count;
 
@@ -239,9 +239,9 @@ namespace BattleEngine.main
             }
         }
 
-        public void Attack(int move, Actor target)
+        public void Attack(int move, params Actor[] targets)
         {
-            MoveSet[move].Trigger(target, this);
+            MoveSet[move].Trigger(this, targets);
         }
     }
 }
