@@ -1,4 +1,5 @@
 ﻿using BattleEngine.common;
+using Spectre.Console;
 using System;
 using System.Runtime;
 using System.Runtime.CompilerServices;
@@ -17,18 +18,12 @@ namespace BattleRunner
             FolderStructurer.CreateStructure();
             IdHandler.ResetIDs();
 
-            Move move1 = new Move("katana_slash", "Katana Slash", "A Cool Slash", 50, Categories.MELEE, [0, 1.0, 0, 0 ,1.0], ListOfComponents[1]);
-            Actor actor1 = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], move1);
+            Move slash = new Move("katana_slash", "Katana Slash", "A Cool Slash", 50, Categories.MELEE, [0, 1.0, 0, 0, 1.0], ListOfComponents[1]);
+            Actor deadpool = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], move1);
 
-            Actor actor2 = new Actor();
+            Actor[] party = [deadpool, new Actor()];
 
-            Console.WriteLine(actor2.Health);
-
-            actor1.Attack(0, actor2);
-
-            Console.WriteLine(actor2.Health);
-
-            SchematicHandler.SaveSchematic(actor1);
+            BattleTest test = new BattleTest();
         }
     }
 }

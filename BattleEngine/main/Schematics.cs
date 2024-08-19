@@ -143,6 +143,8 @@ namespace BattleEngine.main
             public string FileName;
             public string DisplayName;
 
+            public EnemyAITypes AiType;
+
             public double MaxHealth;
 
             public int Level;
@@ -161,6 +163,8 @@ namespace BattleEngine.main
 
                 MaxHealth = -1;
 
+                AiType = EnemyAITypes.WILD;
+
                 Level = -1;
 
                 Attributes = new List<StatAttribute>();
@@ -175,6 +179,7 @@ namespace BattleEngine.main
                 schema.ID = enemy.ID;
                 schema.FileName = enemy.FileName;
                 schema.DisplayName = enemy.DisplayName;
+                schema.AiType = enemy.AiType;
                 schema.Level = enemy.Level;
                 schema.MaxHealth = enemy.MaxHealth;
                 schema.Attributes = enemy.Attributes;

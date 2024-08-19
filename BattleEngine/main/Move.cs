@@ -35,7 +35,7 @@ namespace BattleEngine.main
         }
 
         public delegate void DamageHandler(Move move, double result, params Actor[] targets);
-        public static event DamageHandler IsHurt;
+        public static event DamageHandler ?IsHurt;
 
         public Categories Category { get; set; }
         public List<string> Components { get; set; }

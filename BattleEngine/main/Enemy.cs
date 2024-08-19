@@ -33,12 +33,16 @@ namespace BattleEngine.main
             }
         }
 
+        public EnemyAITypes AiType { get; private set; }
+
         public Enemy()
         {
             ID = IdHandler.GetID(this);
 
             FileName = $"Enemy {ID}";
             DisplayName = "Placeholder";
+
+            AiType = EnemyAITypes.WILD;
 
             Level = 5;
 
@@ -64,12 +68,14 @@ namespace BattleEngine.main
             MitigationValue = 0;
             IsHurt += Mitigate;
         }
-        public Enemy(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
+        public Enemy(string filename, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves)
         {
             ID = IdHandler.GetID(this);
 
             FileName = filename;
             DisplayName = displayname;
+
+            AiType = type;
 
             Level = lvl;
 
@@ -118,6 +124,8 @@ namespace BattleEngine.main
                 FileName = origin.FileName;
                 DisplayName = origin.DisplayName;
 
+                AiType = origin.AiType;
+
                 Level = origin.Level;
 
                 MaxHealth = origin.MaxHealth;
@@ -143,6 +151,7 @@ namespace BattleEngine.main
             enemy.ID = schema.ID;
             enemy.FileName = schema.FileName;
             enemy.DisplayName = schema.DisplayName;
+            enemy.AiType = schema.AiType;
             enemy.Level = schema.Level;
             enemy.MaxHealth = schema.MaxHealth;
             enemy.Attributes = schema.Attributes;
