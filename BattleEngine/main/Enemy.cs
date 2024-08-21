@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using static BattleEngine.common.Global;
 using static BattleEngine.main.Move;
 using static BattleEngine.main.Schematics;
+using static BattleEngine.main.BattleHandler;
 
 namespace BattleEngine.main
 {
-    public record Enemy : Actor
+    public class Enemy : Actor
     {
         private double _maxhp;
         public override double MaxHealth
@@ -43,6 +44,7 @@ namespace BattleEngine.main
             DisplayName = "Placeholder";
 
             AiType = EnemyAITypes.WILD;
+            OnTurn += Think;
 
             Level = 5;
 
@@ -76,6 +78,7 @@ namespace BattleEngine.main
             DisplayName = displayname;
 
             AiType = type;
+            OnTurn += Think;
 
             Level = lvl;
 
@@ -125,6 +128,7 @@ namespace BattleEngine.main
                 DisplayName = origin.DisplayName;
 
                 AiType = origin.AiType;
+                OnTurn += Think;
 
                 Level = origin.Level;
 
@@ -141,6 +145,35 @@ namespace BattleEngine.main
             else
             {
                 throw new ArgumentNullException("isfile", "param was never confirmed");
+            }
+        }
+
+        public void Think(Enemy target, Actor[] party, Enemy[] enemies)
+        {
+            if (target != this)
+            {
+                return;
+            }
+
+            Random rand = new Random();
+
+            if (AiType == EnemyAITypes.WILD)
+            {
+                
+
+                int choice = rand.Next(0, MoveSet.Count);
+                if (MoveSet[choice].Category == Categories.AOE)
+                {
+                    foreach (Actor victim in party)
+                    {
+                        Attack(choice, victim);
+                    }
+                }
+                else
+                {
+                    int victim = rand.Next(0, party.Length);
+                    Attack(choice, party[victim]);
+                }
             }
         }
 

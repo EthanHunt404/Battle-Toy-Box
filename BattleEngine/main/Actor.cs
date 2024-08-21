@@ -8,7 +8,7 @@ using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.main
 {
-    public record Actor
+    public class Actor
     {
         public int ID { get; protected set; }
         public string FileName { get; protected set; }

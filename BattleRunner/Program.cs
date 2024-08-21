@@ -19,11 +19,12 @@ namespace BattleRunner
             IdHandler.ResetIDs();
 
             Move slash = new Move("katana_slash", "Katana Slash", "A Cool Slash", 50, Categories.MELEE, [0, 1.0, 0, 0, 1.0], ListOfComponents[1]);
-            Actor deadpool = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], move1);
+            Actor deadpool = new Actor("deadpool", "Deadpool", 20, [1.0, 1.0, 1.0, 1.0], slash);
 
             Actor[] party = [deadpool, new Actor()];
+            Enemy[] enemies = [new Enemy(), new Enemy()];
 
-            BattleTest test = new BattleTest();
+            BattleHandler test = new BattleTest(party, enemies);
         }
     }
 }

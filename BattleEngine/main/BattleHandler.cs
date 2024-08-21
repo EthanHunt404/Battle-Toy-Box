@@ -8,30 +8,23 @@ using Spectre.Console;
 
 namespace BattleEngine.main
 {
-    public class BattleTest
+    public class BattleHandler
     {
         List<Actor> PlayerParty { get; set; }
         List<Enemy> EnemyParty { get; set; }
 
-        public delegate void TurnHandler(Actor[] allies, Actor[] enemies);
-        public event TurnHandler ?IsEnemyTurn;
+        public delegate void TurnHandler(Enemy target, Actor[] party, Enemy[] enemies);
+        public static event TurnHandler OnTurn;
 
-        public BattleTest(Actor[] allies, Enemy[] enemies)
+        public BattleHandler(Actor[] party, Enemy[] enemies)
         {
-            PlayerParty = new List<Actor>(allies);
+            PlayerParty = new List<Actor>(party);
             EnemyParty = new List<Enemy>(enemies);
         }
 
         public void StartBattle()
-        {
-            Grid grid = new Grid();
-            grid.AddColumn();
-            grid.AddColumn();
+        {  
 
-            foreach (Actor actor in PlayerParty)
-            {
-
-            }
         }
     }
 }
