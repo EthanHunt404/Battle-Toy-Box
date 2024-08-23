@@ -148,6 +148,23 @@ namespace BattleEngine.main
             }
         }
 
+        public static implicit operator Enemy(EnemySchematic schema)
+        {
+            Enemy enemy = new Enemy();
+
+            enemy.ID = schema.ID;
+            enemy.FileName = schema.FileName;
+            enemy.DisplayName = schema.DisplayName;
+            enemy.AiType = schema.AiType;
+            enemy.Level = schema.Level;
+            enemy.MaxHealth = schema.MaxHealth;
+            enemy.Attributes = schema.Attributes;
+            enemy.ComponentRatios = schema.ComponentRatios;
+            enemy.MoveSet = schema.MoveSet;
+
+            return enemy;
+        }
+
         public void Think(Enemy target, Actor[] party, Enemy[] enemies)
         {
             if (target != this)
@@ -175,23 +192,6 @@ namespace BattleEngine.main
                     Attack(choice, party[victim]);
                 }
             }
-        }
-
-        public static implicit operator Enemy(EnemySchematic schema)
-        {
-            Enemy enemy = new Enemy();
-
-            enemy.ID = schema.ID;
-            enemy.FileName = schema.FileName;
-            enemy.DisplayName = schema.DisplayName;
-            enemy.AiType = schema.AiType;
-            enemy.Level = schema.Level;
-            enemy.MaxHealth = schema.MaxHealth;
-            enemy.Attributes = schema.Attributes;
-            enemy.ComponentRatios = schema.ComponentRatios;
-            enemy.MoveSet = schema.MoveSet;
-
-            return enemy;
         }
     }
 }
