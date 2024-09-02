@@ -28,63 +28,193 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ActorBar1 = new ProgressBar();
-            ActorBar2 = new ProgressBar();
-            EnemyBar1 = new ProgressBar();
-            EnemyBar2 = new ProgressBar();
+            components = new System.ComponentModel.Container();
+            HealthBar1 = new ProgressBar();
+            HealthBar2 = new ProgressBar();
+            HealthBar3 = new ProgressBar();
+            HealthBar4 = new ProgressBar();
+            DisplayLabel1 = new Label();
+            DisplayLabel2 = new Label();
+            DisplayLabel3 = new Label();
+            DisplayLabel4 = new Label();
+            SelectButton = new Button();
+            DisplayLog = new ListBox();
+            SkillBox = new ListView();
+            displaynamecolumn = new ColumnHeader();
+            descriptioncolumn = new ColumnHeader();
+            powercolumn = new ColumnHeader();
+            Clock = new System.Windows.Forms.Timer(components);
+            TargetSelector = new DomainUpDown();
             SuspendLayout();
             // 
-            // ActorBar1
+            // HealthBar1
             // 
-            ActorBar1.Location = new Point(12, 12);
-            ActorBar1.Name = "ActorBar1";
-            ActorBar1.Size = new Size(339, 23);
-            ActorBar1.TabIndex = 0;
-            ActorBar1.Value = 100;
+            HealthBar1.Location = new Point(12, 22);
+            HealthBar1.Name = "HealthBar1";
+            HealthBar1.Size = new Size(379, 23);
+            HealthBar1.TabIndex = 0;
+            HealthBar1.Value = 100;
             // 
-            // ActorBar2
+            // HealthBar2
             // 
-            ActorBar2.Location = new Point(12, 41);
-            ActorBar2.Name = "ActorBar2";
-            ActorBar2.Size = new Size(339, 23);
-            ActorBar2.TabIndex = 1;
-            ActorBar2.Value = 100;
+            HealthBar2.Location = new Point(12, 67);
+            HealthBar2.Name = "HealthBar2";
+            HealthBar2.Size = new Size(379, 23);
+            HealthBar2.TabIndex = 1;
+            HealthBar2.Value = 100;
             // 
-            // EnemyBar1
+            // HealthBar3
             // 
-            EnemyBar1.Location = new Point(449, 12);
-            EnemyBar1.Name = "EnemyBar1";
-            EnemyBar1.Size = new Size(339, 23);
-            EnemyBar1.TabIndex = 4;
-            EnemyBar1.Value = 100;
+            HealthBar3.Location = new Point(409, 22);
+            HealthBar3.Name = "HealthBar3";
+            HealthBar3.Size = new Size(379, 23);
+            HealthBar3.TabIndex = 4;
+            HealthBar3.Value = 100;
             // 
-            // EnemyBar2
+            // HealthBar4
             // 
-            EnemyBar2.Location = new Point(449, 41);
-            EnemyBar2.Name = "EnemyBar2";
-            EnemyBar2.Size = new Size(339, 23);
-            EnemyBar2.TabIndex = 5;
-            EnemyBar2.Value = 100;
+            HealthBar4.Location = new Point(409, 67);
+            HealthBar4.Name = "HealthBar4";
+            HealthBar4.Size = new Size(379, 23);
+            HealthBar4.TabIndex = 5;
+            HealthBar4.Value = 100;
+            // 
+            // DisplayLabel1
+            // 
+            DisplayLabel1.AutoSize = true;
+            DisplayLabel1.Location = new Point(12, 4);
+            DisplayLabel1.Name = "DisplayLabel1";
+            DisplayLabel1.Size = new Size(38, 15);
+            DisplayLabel1.TabIndex = 6;
+            DisplayLabel1.Text = "label1";
+            // 
+            // DisplayLabel2
+            // 
+            DisplayLabel2.AutoSize = true;
+            DisplayLabel2.Location = new Point(12, 48);
+            DisplayLabel2.Name = "DisplayLabel2";
+            DisplayLabel2.Size = new Size(38, 15);
+            DisplayLabel2.TabIndex = 7;
+            DisplayLabel2.Text = "label2";
+            // 
+            // DisplayLabel3
+            // 
+            DisplayLabel3.AutoSize = true;
+            DisplayLabel3.Location = new Point(407, 4);
+            DisplayLabel3.Name = "DisplayLabel3";
+            DisplayLabel3.Size = new Size(38, 15);
+            DisplayLabel3.TabIndex = 8;
+            DisplayLabel3.Text = "label3";
+            // 
+            // DisplayLabel4
+            // 
+            DisplayLabel4.AutoSize = true;
+            DisplayLabel4.Location = new Point(408, 48);
+            DisplayLabel4.Name = "DisplayLabel4";
+            DisplayLabel4.Size = new Size(38, 15);
+            DisplayLabel4.TabIndex = 9;
+            DisplayLabel4.Text = "label4";
+            // 
+            // SelectButton
+            // 
+            SelectButton.Location = new Point(11, 375);
+            SelectButton.Name = "SelectButton";
+            SelectButton.Size = new Size(254, 40);
+            SelectButton.TabIndex = 11;
+            SelectButton.Text = "Use Skill";
+            SelectButton.UseVisualStyleBackColor = true;
+            SelectButton.Click += UseSkill;
+            // 
+            // DisplayLog
+            // 
+            DisplayLog.FormattingEnabled = true;
+            DisplayLog.ItemHeight = 15;
+            DisplayLog.Location = new Point(409, 96);
+            DisplayLog.Name = "DisplayLog";
+            DisplayLog.Size = new Size(379, 319);
+            DisplayLog.TabIndex = 12;
+            // 
+            // SkillBox
+            // 
+            SkillBox.Columns.AddRange(new ColumnHeader[] { displaynamecolumn, descriptioncolumn, powercolumn });
+            SkillBox.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            SkillBox.Location = new Point(12, 96);
+            SkillBox.Name = "SkillBox";
+            SkillBox.Size = new Size(379, 273);
+            SkillBox.TabIndex = 14;
+            SkillBox.UseCompatibleStateImageBehavior = false;
+            SkillBox.View = View.Details;
+            SkillBox.ItemSelectionChanged += SelectSkill;
+            // 
+            // displaynamecolumn
+            // 
+            displaynamecolumn.Text = "Name";
+            displaynamecolumn.TextAlign = HorizontalAlignment.Center;
+            displaynamecolumn.Width = 100;
+            // 
+            // descriptioncolumn
+            // 
+            descriptioncolumn.Text = "Description";
+            descriptioncolumn.TextAlign = HorizontalAlignment.Center;
+            descriptioncolumn.Width = 215;
+            // 
+            // powercolumn
+            // 
+            powercolumn.Text = "Power";
+            powercolumn.TextAlign = HorizontalAlignment.Center;
+            // 
+            // Clock
+            // 
+            Clock.Interval = 1000;
+            Clock.Tick += Update;
+            // 
+            // TargetSelector
+            // 
+            TargetSelector.Location = new Point(271, 384);
+            TargetSelector.Name = "TargetSelector";
+            TargetSelector.Size = new Size(120, 23);
+            TargetSelector.TabIndex = 15;
+            TargetSelector.Text = "TargetSelector";
             // 
             // TestWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(EnemyBar2);
-            Controls.Add(EnemyBar1);
-            Controls.Add(ActorBar2);
-            Controls.Add(ActorBar1);
+            Controls.Add(TargetSelector);
+            Controls.Add(SkillBox);
+            Controls.Add(DisplayLog);
+            Controls.Add(SelectButton);
+            Controls.Add(DisplayLabel4);
+            Controls.Add(DisplayLabel3);
+            Controls.Add(DisplayLabel2);
+            Controls.Add(DisplayLabel1);
+            Controls.Add(HealthBar4);
+            Controls.Add(HealthBar3);
+            Controls.Add(HealthBar2);
+            Controls.Add(HealthBar1);
             Name = "TestWindow";
-            Text = "Form1";
+            Text = "TestWindow";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private ProgressBar ActorBar1;
-        private ProgressBar ActorBar2;
-        private ProgressBar EnemyBar1;
-        private ProgressBar EnemyBar2;
+        internal ProgressBar HealthBar1;
+        internal ProgressBar HealthBar2;
+        internal ProgressBar HealthBar3;
+        internal ProgressBar HealthBar4;
+        internal Label DisplayLabel1;
+        internal Label DisplayLabel2;
+        internal Label DisplayLabel3;
+        internal Label DisplayLabel4;
+        internal Button SelectButton;
+        internal ListBox DisplayLog;
+        internal ListView SkillBox;
+        internal ColumnHeader descriptioncolumn;
+        internal ColumnHeader powercolumn;
+        private System.Windows.Forms.Timer Clock;
+        private ColumnHeader displaynamecolumn;
+        private DomainUpDown TargetSelector;
     }
 }

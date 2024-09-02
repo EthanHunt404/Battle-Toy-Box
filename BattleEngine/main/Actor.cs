@@ -101,8 +101,8 @@ namespace BattleEngine.main
         {
             ID = IdHandler.GetID(this);
 
-            FileName = $"Actor {ID}";
-            DisplayName = "Placeholder";
+            FileName = $"actor{ID}";
+            DisplayName = $"Actor {ID}";
 
             Level = 5;
 
@@ -123,7 +123,7 @@ namespace BattleEngine.main
             MaxHealth = 100 * Attributes[0].Value;
             Health = MaxHealth;
 
-            MoveSet = [new Move()];
+            MoveSet = new List<Move>(ListOfTestingMoves);
 
             MitigationValue = 0;
             IsHurt += Mitigate;
@@ -242,6 +242,10 @@ namespace BattleEngine.main
         public void Attack(int move, params Actor[] targets)
         {
             MoveSet[move].Trigger(this, targets);
+        }
+        public void Attack(Move move, params Actor[] targets)
+        {
+            move.Trigger(this, targets);
         }
     }
 }

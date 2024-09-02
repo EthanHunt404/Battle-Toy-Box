@@ -19,6 +19,8 @@ namespace BattleEngine.common
 
         public static string Version { get; set; }
 
+        public delegate string TextDelegate(string text);
+
         static Global()
         {
             Version = "0.0.1";
@@ -54,7 +56,8 @@ namespace BattleEngine.common
             STATCAP = 100,
             ENEMYSTATCAP = 200,
             POWERCAP = 200,
-            LEVELCAP = 100
+            LEVELCAP = 100,
+            SKILLCAP = 10
         }
         public enum Categories
         {

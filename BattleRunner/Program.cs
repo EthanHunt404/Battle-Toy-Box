@@ -24,7 +24,7 @@ namespace BattleRunner
             Actor[] party = [deadpool, new Actor()];
             Enemy[] enemies = [new Enemy(), new Enemy()];
 
-            BattleHandler test = new BattleTest(party, enemies);
+            TurnHandler test = new BattleTest(party, enemies);
         }
     }
 }

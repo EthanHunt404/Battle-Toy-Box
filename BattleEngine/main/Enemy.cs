@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using static BattleEngine.common.Global;
 using static BattleEngine.main.Move;
 using static BattleEngine.main.Schematics;
-using static BattleEngine.main.BattleHandler;
+using static BattleEngine.main.TurnHandler;
 
 namespace BattleEngine.main
 {
@@ -34,16 +34,50 @@ namespace BattleEngine.main
             }
         }
 
-        public EnemyAITypes AiType { get; private set; }
+        public EnemyAITypes AiType { get; set; }
 
         public Enemy()
         {
             ID = IdHandler.GetID(this);
 
-            FileName = $"Enemy {ID}";
-            DisplayName = "Placeholder";
+            FileName = $"enemy{ID}";
+            DisplayName = $"Enemy {ID}";
 
             AiType = EnemyAITypes.WILD;
+            OnTurn += Think;
+
+            Level = 5;
+
+            Attributes = new List<StatAttribute>(ListOfAttributes);
+            for (int i = 0; i < Attributes.Count; i++)
+            {
+                StatAttribute item = Attributes[i];
+                item.Value = 5 * Level;
+                Attributes[i] = item;
+            }
+
+            ComponentRatios = new Dictionary<string, double>();
+            for (int i = 0; i < ListOfComponents.Count; i++)
+            {
+                ComponentRatios.Add(ListOfComponents[i], 1.0);
+            }
+
+            MaxHealth = 500 * Attributes[0].Value;
+            Health = MaxHealth;
+
+            MoveSet = [new Move()];
+
+            MitigationValue = 0;
+            IsHurt += Mitigate;
+        }
+        public Enemy(EnemyAITypes type)
+        {
+            ID = IdHandler.GetID(this);
+
+            FileName = $"enemy{ID}";
+            DisplayName = $"Enemy {ID}";
+
+            AiType = type;
             OnTurn += Think;
 
             Level = 5;
@@ -176,8 +210,6 @@ namespace BattleEngine.main
 
             if (AiType == EnemyAITypes.WILD)
             {
-                
-
                 int choice = rand.Next(0, MoveSet.Count);
                 if (MoveSet[choice].Category == Categories.AOE)
                 {

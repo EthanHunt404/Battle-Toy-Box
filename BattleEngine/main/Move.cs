@@ -45,8 +45,8 @@ namespace BattleEngine.main
         {
             ID = IdHandler.GetID(this);
 
-            FileName = $"Move {ID}";
-            DisplayName = $"Placeholder";
+            FileName = $"move{ID}";
+            DisplayName = $"Move {ID}";
             Description = "Not Implemented";
 
             Power = 10;
