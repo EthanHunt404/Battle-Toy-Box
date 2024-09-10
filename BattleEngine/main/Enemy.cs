@@ -67,7 +67,6 @@ namespace BattleEngine.main
 
             MoveSet = [new Move()];
 
-            MitigationValue = 0;
             IsHurt += Mitigate;
         }
         public Enemy(EnemyAITypes type)
@@ -101,7 +100,6 @@ namespace BattleEngine.main
 
             MoveSet = [new Move()];
 
-            MitigationValue = 0;
             IsHurt += Mitigate;
         }
         public Enemy(string filename, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves)
@@ -135,7 +133,6 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(moves);
 
-            MitigationValue = 0;
             IsHurt += Mitigate;
         }
         public Enemy(string name, bool isfile)
@@ -169,7 +166,6 @@ namespace BattleEngine.main
                 MaxHealth = origin.MaxHealth;
                 Health = MaxHealth;
 
-                MitigationValue = 0;
                 IsHurt += Mitigate;
 
                 Attributes = new List<StatAttribute>(origin.Attributes);
@@ -199,7 +195,7 @@ namespace BattleEngine.main
             return enemy;
         }
 
-        public void Think(Enemy target, Actor[] party, Enemy[] enemies)
+        public void Think(Enemy target, Actor[] party, Actor[] enemies)
         {
             if (target != this)
             {

@@ -59,7 +59,7 @@ namespace BattleEngine.main
             {
                 AttributeRatioes.Add(ListOfAttributes[i].Name.ToUpper(), 0);
             }
-            AttributeRatioes[ListOfAttributes[1].Name] = 1.0;
+            AttributeRatioes[ListOfAttributes[1].Name.ToUpper()] = 1.0;
         }
         public Move(string filename, string displayname, string description, int power, Categories category, double[] ratioes, params string[] components)
         {
@@ -143,7 +143,7 @@ namespace BattleEngine.main
             return move;
         }
 
-        public virtual void Trigger(Actor user, params Actor[] targets)
+        public void Trigger(Actor user, params Actor[] targets)
         {
             double result = 0;
             double multiplier = 0;

@@ -11,10 +11,9 @@ namespace BattleEngine.main
     public class TurnHandler
     {
         public List<Actor> PlayerParty { get; set; }
-        public List<Actor> MemberList { get; set; }
-
         public List<Enemy> EnemyParty { get; set; }
-        public List<EnemyAITypes> EnemyAiList { get; set; }
+
+        public List<Actor> MemberList { get; set; }
 
         public Actor CurrentMember { get; private set; }
         public int CurrentTurn { get; private set; }
@@ -26,12 +25,6 @@ namespace BattleEngine.main
         {
             PlayerParty = new List<Actor>(party);
             EnemyParty = new List<Enemy>(enemies);
-
-            EnemyAiList = new List<EnemyAITypes>();
-            foreach (Enemy enemy in EnemyParty)
-            {
-                EnemyAiList.Add(enemy.AiType);
-            }
 
             MemberList = new List<Actor>(PlayerParty);
             MemberList.AddRange(EnemyParty);
@@ -54,7 +47,7 @@ namespace BattleEngine.main
             {
                 CurrentMember = member;
             }
-            else if (EnemyParty.Contains(member as Enemy))
+            else if (EnemyParty.Contains(member))
             {
                 Enemy intermediary = EnemyParty.Find(enemy => member.FileName == enemy.FileName);
                 OnTurn.Invoke(intermediary, PlayerParty.ToArray(), EnemyParty.ToArray());

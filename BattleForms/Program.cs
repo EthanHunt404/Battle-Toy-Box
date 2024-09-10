@@ -1,3 +1,5 @@
+using BattleEngine.common;
+
 namespace BattleForms
 {
     internal static class Program
@@ -10,6 +12,9 @@ namespace BattleForms
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
+
+            FolderStructurer.CreateStructure();
+
             ApplicationConfiguration.Initialize();
             Application.Run(new TestWindow());
         }

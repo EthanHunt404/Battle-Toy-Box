@@ -52,27 +52,6 @@ namespace BattleEngine.main
             }
         }
 
-        private double _mitigationvalue;
-        public double MitigationValue
-        {
-            get { return _mitigationvalue; }
-            protected set
-            {
-                if (_mitigationvalue < 0)
-                {
-                    _mitigationvalue = 0;
-                }
-                else if (_mitigationvalue > MaxHealth)
-                {
-                    _mitigationvalue = MaxHealth;
-                }
-                else
-                {
-                    _mitigationvalue = value;
-                }
-            }
-        }
-
         private int _level;
         public int Level {
             get { return _level; }
@@ -125,7 +104,6 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(ListOfTestingMoves);
 
-            MitigationValue = 0;
             IsHurt += Mitigate;
         }
         public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
@@ -156,7 +134,6 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(moves);
 
-            MitigationValue = 0;
             IsHurt += Mitigate;
         }
         public Actor(string name, bool isfile)
@@ -187,7 +164,6 @@ namespace BattleEngine.main
                 MaxHealth = origin.MaxHealth;
                 Health = MaxHealth;
 
-                MitigationValue = 0;
                 IsHurt += Mitigate;
 
                 Attributes = new List<StatAttribute>(origin.Attributes);
@@ -225,6 +201,8 @@ namespace BattleEngine.main
 
         public void Mitigate(Move move, double result, params Actor[] targets)
         {
+            double mitigationvalue = 0;
+
             if (targets.Contains(this))
             {
                 int TotalComponents = move.Components.Count;
@@ -232,10 +210,10 @@ namespace BattleEngine.main
                 foreach (string component in move.Components)
                 {
                     double fraction = result / TotalComponents;
-                    MitigationValue += fraction * ComponentRatios[component];
+                    mitigationvalue += fraction * ComponentRatios[component];
                 }
 
-                Health -= MitigationValue;
+                Health -= mitigationvalue;
             }
         }
 

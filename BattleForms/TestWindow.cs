@@ -13,7 +13,6 @@ namespace BattleForms
         public TestWindow()
         {
             InitializeComponent();
-            FolderStructurer.CreateStructure();
             IdHandler.ResetIDs();
 
             Actor[] TestActors = [new Actor(), new Actor()];
@@ -91,9 +90,10 @@ namespace BattleForms
 
         private void UseSkill(object sender, EventArgs e)
         {
+            //fix this
             int targetindex = TargetSelector.SelectedIndex;
+            
             Actor target = BH.MemberList[targetindex];
-
             BH.CurrentMember.Attack(CurrentMove, target);
 
             BH.StepTurn();
