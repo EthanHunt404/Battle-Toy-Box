@@ -17,7 +17,9 @@ namespace BattleForms
 
             Actor[] TestActors = [new Actor(), new Actor()];
             Enemy[] TestEnemies = [new Enemy(EnemyAITypes.WILD), new Enemy(EnemyAITypes.WILD)];
+
             BH = new TurnHandler(TestActors, TestEnemies);
+            BattleLogger.TextBus += LogCatcher;
 
             Clock.Start();
         }
@@ -90,15 +92,19 @@ namespace BattleForms
 
         private void UseSkill(object sender, EventArgs e)
         {
-            //fix this
-            int targetindex = TargetSelector.SelectedIndex;
+            string selected = TargetSelector.SelectedItem.ToString();
             
-            Actor target = BH.MemberList[targetindex];
+            Actor target = BH.MemberList.Find(actor => actor.DisplayName == selected);
             BH.CurrentMember.Attack(CurrentMove, target);
 
             BH.StepTurn();
             SkillBox.Items.Clear();
             Clock.Start();
+        }
+
+        private void LogCatcher(string text)
+        {
+            DisplayLog.Items.Add(text);
         }
     }
 }

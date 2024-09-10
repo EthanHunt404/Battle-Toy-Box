@@ -214,16 +214,19 @@ namespace BattleEngine.main
                 }
 
                 Health -= mitigationvalue;
+                BattleLogger.Log($"{DisplayName} received {mitigationvalue} damage!");
             }
         }
 
         public void Attack(int move, params Actor[] targets)
         {
             MoveSet[move].Trigger(this, targets);
+            BattleLogger.Log($"{DisplayName} used {MoveSet[move].DisplayName}!");
         }
         public void Attack(Move move, params Actor[] targets)
         {
             move.Trigger(this, targets);
+            BattleLogger.Log($"{DisplayName} used {move.DisplayName}!");
         }
     }
 }

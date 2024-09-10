@@ -51,6 +51,7 @@ namespace BattleEngine.main
             {
                 Enemy intermediary = EnemyParty.Find(enemy => member.FileName == enemy.FileName);
                 OnTurn.Invoke(intermediary, PlayerParty.ToArray(), EnemyParty.ToArray());
+                StepTurn();
             }
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using static BattleEngine.main.Schematics;
 
-namespace BattleEngine.main
+namespace BattleEngine.common
 {
     public static class IdHandler
     {

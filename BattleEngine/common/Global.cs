@@ -19,8 +19,6 @@ namespace BattleEngine.common
 
         public static string Version { get; set; }
 
-        public delegate string TextDelegate(string text);
-
         static Global()
         {
             Version = "0.0.1";
