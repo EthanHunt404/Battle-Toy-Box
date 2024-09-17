@@ -1,7 +1,7 @@
 using BattleEngine.common;
 using Microsoft.VisualBasic.Logging;
 using System.Collections.Generic;
-using Windows.UI.Popups;
+using static BattleEngine.common.Global;
 
 namespace BattleForms
 {

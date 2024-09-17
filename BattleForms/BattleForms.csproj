@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="BattleEngine.common.Global">
-      <Static>True</Static>
-    </Using>
+    <Using Include="BattleEngine.common" />
     <Using Include="BattleEngine.main" />
   </ItemGroup>
 

@@ -9,7 +9,7 @@ namespace BattleEngine.common
 {
     public static class Global
     {
-        public static string Version { get; set; }
+        public static readonly string Version = "0.0.1";
 
         public static JsonSerializerOptions SchemaFormatter = new JsonSerializerOptions();
 
@@ -21,8 +21,6 @@ namespace BattleEngine.common
 
         static Global()
         {
-            Version = "0.0.1";
-
             SchemaFormatter.WriteIndented = true;
             SchemaFormatter.IncludeFields = true;
             SchemaFormatter.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
@@ -42,7 +40,7 @@ namespace BattleEngine.common
 
             foreach (string component in ListOfComponents)
             {
-                ListOfTestingMoves.Add(new Move($"{component.ToLower()}_punch", $"{component} PUNCH!", "It is an Awesome Punch", 
+                ListOfTestingMoves.Add(new Move($"{component.ToLower()}_punch", $"{component} PUNCH!", "It is an Awesome Punch",
                     50, Categories.MELEE, [0, 1.0, 0, 0, 0], component));
             }
         }

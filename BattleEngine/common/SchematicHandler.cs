@@ -69,23 +69,17 @@ namespace BattleEngine.common
         public static void SaveSchematic(MoveSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-
             File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
-            RefreshSchematics();
         }
         public static void SaveSchematic(ActorSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-
             File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
-            RefreshSchematics();
         }
         public static void SaveSchematic(EnemySchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-
             File.WriteAllText(User.EnemyPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
-            RefreshSchematics();
         }
     }
 }
