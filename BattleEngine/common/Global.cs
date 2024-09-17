@@ -9,6 +9,8 @@ namespace BattleEngine.common
 {
     public static class Global
     {
+        public static string Version { get; set; }
+
         public static JsonSerializerOptions SchemaFormatter = new JsonSerializerOptions();
 
         public static List<string> ListOfComponents { get; set; }
@@ -16,8 +18,6 @@ namespace BattleEngine.common
         public static List<StatAttribute> ListOfAttributes { get; set; }
 
         public static List<Move> ListOfTestingMoves { get; set; }
-
-        public static string Version { get; set; }
 
         static Global()
         {

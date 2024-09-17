@@ -9,31 +9,10 @@ namespace BattleEngine.main
 {
     public static class Schematics
     {
-        //Id File Schematic
-        public record struct IdFileSchematic
-        {
-            public string Version;
-            public int MoveTotalIDs;
-            public int ActorTotalIDs;
-            public int EnemyTotalIDs;
-            public string Message;
-
-            public IdFileSchematic()
-            {
-                Version = Global.Version;
-                MoveTotalIDs = 0;
-                ActorTotalIDs = 0;
-                EnemyTotalIDs = 0;
-                Message = "Do not delete this, it may cause problems in the indexing of actors and moves alike";
-            }
-        }   
-
         //Move Schematic
         public record struct MoveSchematic
         {
             public string Version;
-
-            public int ID;
             public string FileName;
 
             public string DisplayName;
@@ -47,7 +26,6 @@ namespace BattleEngine.main
             public MoveSchematic()
             {
                 Version = Global.Version;
-                ID = -1;
 
                 FileName = "reference";
                 DisplayName = "Move Schematic";
@@ -62,12 +40,9 @@ namespace BattleEngine.main
             {
                 MoveSchematic schema = new MoveSchematic();
 
-                schema.ID = move.ID;
                 schema.FileName = move.FileName;
-
                 schema.DisplayName = move.DisplayName;
                 schema.Description = move.Description;
-
                 schema.Power = move.Power;
                 schema.Category = move.Category;
                 schema.Components = move.Components;
@@ -81,8 +56,6 @@ namespace BattleEngine.main
         public record struct ActorSchematic
         {
             public string Version;
-
-            public int ID;
 
             public string FileName;
             public string DisplayName;
@@ -98,7 +71,6 @@ namespace BattleEngine.main
             public ActorSchematic()
             {
                 Version = Global.Version;
-                ID = -1;
 
                 FileName = $"reference";
                 DisplayName = "Actor Schematic";
@@ -116,7 +88,6 @@ namespace BattleEngine.main
             {
                 ActorSchematic schema = new ActorSchematic();
 
-                schema.ID = actor.ID;
                 schema.FileName = actor.FileName;
                 schema.DisplayName = actor.DisplayName;
                 schema.Level = actor.Level;
@@ -138,8 +109,6 @@ namespace BattleEngine.main
         {
             public string Version;
 
-            public int ID;
-
             public string FileName;
             public string DisplayName;
 
@@ -156,7 +125,6 @@ namespace BattleEngine.main
             public EnemySchematic()
             {
                 Version = Global.Version;
-                ID = -1;
 
                 FileName = $"reference";
                 DisplayName = "Enemy Schematic";
@@ -176,7 +144,6 @@ namespace BattleEngine.main
             {
                 EnemySchematic schema = new EnemySchematic();
 
-                schema.ID = enemy.ID;
                 schema.FileName = enemy.FileName;
                 schema.DisplayName = enemy.DisplayName;
                 schema.AiType = enemy.AiType;

@@ -12,16 +12,20 @@ namespace BattleEngine.common
         public static void CreateStructure()
         {
             Directory.CreateDirectory(User.SchematicPath);
-
             Directory.CreateDirectory(User.MovePath);
+            Directory.CreateDirectory(User.ActorPath);
+            Directory.CreateDirectory(User.EnemyPath);
+
+            CreateJsonReferences();
+        }
+        public static void CreateJsonReferences()
+        {
             MoveSchematic movereference = new MoveSchematic();
             SchematicHandler.SaveSchematic(movereference);
 
-            Directory.CreateDirectory(User.ActorPath);
             ActorSchematic actorreference = new ActorSchematic();
             SchematicHandler.SaveSchematic(actorreference);
 
-            Directory.CreateDirectory(User.EnemyPath);
             EnemySchematic enemyreference = new EnemySchematic();
             SchematicHandler.SaveSchematic(enemyreference);
         }

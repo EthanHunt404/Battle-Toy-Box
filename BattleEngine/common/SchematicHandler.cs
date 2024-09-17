@@ -31,8 +31,6 @@ namespace BattleEngine.common
             EnemyFileList = new List<string>();
             EnemyList = new Dictionary<string, string>();
 
-            FolderStructurer.CreateStructure();
-
             RefreshSchematics();
         }
 
@@ -66,8 +64,6 @@ namespace BattleEngine.common
 
                 EnemyList.Add(currentenemy.FileName, enemypath);
             }
-
-            IdHandler.SortIDs();
         }
 
         public static void SaveSchematic(MoveSchematic schema)
@@ -75,18 +71,21 @@ namespace BattleEngine.common
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
+            RefreshSchematics();
         }
         public static void SaveSchematic(ActorSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
+            RefreshSchematics();
         }
         public static void SaveSchematic(EnemySchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
 
             File.WriteAllText(User.EnemyPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
+            RefreshSchematics();
         }
     }
 }

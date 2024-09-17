@@ -154,8 +154,6 @@ namespace BattleEngine.main
                     origin = JsonSerializer.Deserialize<ActorSchematic>(JsonString, SchemaFormatter);
                 }
 
-                ID = origin.ID;
-
                 FileName = origin.FileName;
                 DisplayName = origin.DisplayName;
 
@@ -180,7 +178,6 @@ namespace BattleEngine.main
         {
             Actor actor = new Actor();
 
-            actor.ID = schema.ID;
             actor.FileName = schema.FileName;
             actor.DisplayName = schema.DisplayName;
             actor.Level = schema.Level;

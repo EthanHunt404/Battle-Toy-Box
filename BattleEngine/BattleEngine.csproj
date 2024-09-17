@@ -10,7 +10,6 @@
   <ItemGroup>
     <Using Include="BattleEngine.common" />
     <Using Include="BattleEngine.main" />
-    <Using Include="BattleEngine.main" />
   </ItemGroup>
 
 </Project>

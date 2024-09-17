@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -153,8 +154,6 @@ namespace BattleEngine.main
                     origin = JsonSerializer.Deserialize<EnemySchematic>(JsonString, SchemaFormatter);
                 }
 
-                ID = origin.ID;
-
                 FileName = origin.FileName;
                 DisplayName = origin.DisplayName;
 
@@ -182,7 +181,6 @@ namespace BattleEngine.main
         {
             Enemy enemy = new Enemy();
 
-            enemy.ID = schema.ID;
             enemy.FileName = schema.FileName;
             enemy.DisplayName = schema.DisplayName;
             enemy.AiType = schema.AiType;
@@ -202,23 +200,28 @@ namespace BattleEngine.main
                 return;
             }
 
-            Random rand = new Random();
-
             if (AiType == EnemyAITypes.WILD)
             {
-                int choice = rand.Next(0, MoveSet.Count);
-                if (MoveSet[choice].Category == Categories.AOE)
+                WildBrain(target, party, enemies);
+            }
+        }
+
+        private void WildBrain(Enemy target, Actor[] party, Actor[] enemies)
+        {
+            Random rand = new Random();
+
+            int choice = rand.Next(0, MoveSet.Count);
+            if (MoveSet[choice].Category == Categories.AOE)
+            {
+                foreach (Actor victim in party)
                 {
-                    foreach (Actor victim in party)
-                    {
-                        Attack(choice, victim);
-                    }
+                    Attack(choice, victim);
                 }
-                else
-                {
-                    int victim = rand.Next(0, party.Length);
-                    Attack(choice, party[victim]);
-                }
+            }
+            else
+            {
+                int victim = rand.Next(0, party.Length);
+                Attack(choice, party[victim]);
             }
         }
     }

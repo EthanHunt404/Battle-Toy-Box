@@ -102,7 +102,6 @@ namespace BattleEngine.main
                     origin = JsonSerializer.Deserialize<MoveSchematic>(JsonString, SchemaFormatter);
                 }
 
-                ID = origin.ID;
                 FileName = origin.FileName;
 
                 DisplayName = $@"{origin.DisplayName}";
@@ -129,12 +128,9 @@ namespace BattleEngine.main
         {
             Move move = new Move();
 
-            move.ID = schema.ID;
             move.FileName = schema.FileName;
-
             move.DisplayName = schema.DisplayName;
             move.Description = schema.Description;
-
             move.Power = schema.Power;
             move.Category = schema.Category;
             move.Components = schema.Components;
