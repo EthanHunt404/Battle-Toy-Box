@@ -9,18 +9,18 @@ using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.common
 {
-    public static class SchematicHandler
+    public class SchematicHandler
     {
-        public static List<string> MoveFileList { get; private set; }
-        public static Dictionary<string, string> MoveList { get; private set; }
+        public List<string> MoveFileList { get; private set; }
+        public Dictionary<string, string> MoveList { get; private set; }
 
-        public static List<string> ActorFileList { get; private set; }
-        public static Dictionary<string, string> ActorList { get; private set; }
+        public List<string> ActorFileList { get; private set; }
+        public Dictionary<string, string> ActorList { get; private set; }
 
-        public static List<string> EnemyFileList { get; private set; }
-        public static Dictionary<string, string> EnemyList { get; private set; }
+        public List<string> EnemyFileList { get; private set; }
+        public Dictionary<string, string> EnemyList { get; private set; }
 
-        static SchematicHandler()
+        public SchematicHandler()
         {
             MoveList = new Dictionary<string, string>();
             MoveFileList = new List<string>();
@@ -30,11 +30,9 @@ namespace BattleEngine.common
 
             EnemyFileList = new List<string>();
             EnemyList = new Dictionary<string, string>();
-
-            RefreshSchematics();
         }
 
-        public static void RefreshSchematics()
+        public void RefreshSchematics()
         {
             MoveFileList.Clear();
             MoveList.Clear();
@@ -66,17 +64,17 @@ namespace BattleEngine.common
             }
         }
 
-        public static void SaveSchematic(MoveSchematic schema)
+        public void SaveSchematic(MoveSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
             File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
-        public static void SaveSchematic(ActorSchematic schema)
+        public void SaveSchematic(ActorSchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
             File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
         }
-        public static void SaveSchematic(EnemySchematic schema)
+        public void SaveSchematic(EnemySchematic schema)
         {
             string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
             File.WriteAllText(User.EnemyPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);

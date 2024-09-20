@@ -43,10 +43,10 @@ namespace BattleEngine.main
 
         public Move()
         {
+            FileName = $"move";
             ID = IdHandler.GetID(this);
 
-            FileName = $"move{ID}";
-            DisplayName = $"Move {ID}";
+            DisplayName = $"Move {ID + 1}";
             Description = "Not Implemented";
 
             Power = 10;
@@ -63,11 +63,11 @@ namespace BattleEngine.main
         }
         public Move(string filename, string displayname, string description, int power, Categories category, double[] ratioes, params string[] components)
         {
+            FileName = filename.ToLower();
             ID = IdHandler.GetID(this);
 
-            FileName = filename.ToLower();
-            DisplayName = $@"{displayname}";
-            Description = $@"{description}";
+            DisplayName = $"{displayname} {ID + 1}";
+            Description = description;
 
             Power = power;
             Category = category;
@@ -103,9 +103,10 @@ namespace BattleEngine.main
                 }
 
                 FileName = origin.FileName;
+                ID = IdHandler.GetID(this);
 
-                DisplayName = $@"{origin.DisplayName}";
-                Description = $@"{origin.Description}";
+                DisplayName = $"{origin.DisplayName} {ID + 1}";
+                Description = origin.Description;
 
                 Power = origin.Power;
                 Category = origin.Category;

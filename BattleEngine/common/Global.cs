@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -9,9 +10,9 @@ namespace BattleEngine.common
 {
     public static class Global
     {
-        public static readonly string Version = "0.0.1";
+        public static SchematicHandler Schematiker { get; private set; }
 
-        public static JsonSerializerOptions SchemaFormatter = new JsonSerializerOptions();
+        public static JsonSerializerOptions SchemaFormatter {  get; private set; }
 
         public static List<string> ListOfComponents { get; set; }
 
@@ -19,8 +20,11 @@ namespace BattleEngine.common
 
         public static List<Move> ListOfTestingMoves { get; set; }
 
-        static Global()
+        public static void Init()
         {
+            Schematiker = new SchematicHandler();
+
+            SchemaFormatter = new JsonSerializerOptions();
             SchemaFormatter.WriteIndented = true;
             SchemaFormatter.IncludeFields = true;
             SchemaFormatter.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
@@ -37,12 +41,13 @@ namespace BattleEngine.common
             ];
 
             ListOfTestingMoves = new List<Move>();
-
             foreach (string component in ListOfComponents)
             {
                 ListOfTestingMoves.Add(new Move($"{component.ToLower()}_punch", $"{component} PUNCH!", "It is an Awesome Punch",
                     50, Categories.MELEE, [0, 1.0, 0, 0, 0], component));
             }
+
+            Schematiker.RefreshSchematics();
         }
 
         public enum Limits

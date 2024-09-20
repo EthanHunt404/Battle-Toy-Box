@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static BattleEngine.main.Schematics;
+using static BattleEngine.common.Global;
 
 namespace BattleEngine.common
 {
@@ -21,13 +22,13 @@ namespace BattleEngine.common
         public static void CreateJsonReferences()
         {
             MoveSchematic movereference = new MoveSchematic();
-            SchematicHandler.SaveSchematic(movereference);
+            Schematiker.SaveSchematic(movereference);
 
             ActorSchematic actorreference = new ActorSchematic();
-            SchematicHandler.SaveSchematic(actorreference);
+            Schematiker.SaveSchematic(actorreference);
 
             EnemySchematic enemyreference = new EnemySchematic();
-            SchematicHandler.SaveSchematic(enemyreference);
+            Schematiker.SaveSchematic(enemyreference);
         }
     }
 }

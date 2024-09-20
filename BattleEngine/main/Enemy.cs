@@ -39,10 +39,10 @@ namespace BattleEngine.main
 
         public Enemy()
         {
+            FileName = $"enemy";
             ID = IdHandler.GetID(this);
 
-            FileName = $"enemy{ID}";
-            DisplayName = $"Enemy {ID}";
+            DisplayName = $"Enemy {ID + 1}";
 
             AiType = EnemyAITypes.WILD;
             OnTurn += Think;
@@ -72,10 +72,10 @@ namespace BattleEngine.main
         }
         public Enemy(EnemyAITypes type)
         {
+            FileName = $"enemy";
             ID = IdHandler.GetID(this);
 
-            FileName = $"enemy{ID}";
-            DisplayName = $"Enemy {ID}";
+            DisplayName = $"Enemy {ID + 1}";
 
             AiType = type;
             OnTurn += Think;
@@ -105,10 +105,10 @@ namespace BattleEngine.main
         }
         public Enemy(string filename, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves)
         {
+            FileName = filename.ToLower();
             ID = IdHandler.GetID(this);
 
-            FileName = filename;
-            DisplayName = displayname;
+            DisplayName = $"{displayname} {ID + 1}";
 
             AiType = type;
             OnTurn += Think;
@@ -155,7 +155,9 @@ namespace BattleEngine.main
                 }
 
                 FileName = origin.FileName;
-                DisplayName = origin.DisplayName;
+                ID = IdHandler.GetID(this);
+
+                DisplayName = $"{origin.DisplayName} {ID + 1}";
 
                 AiType = origin.AiType;
                 OnTurn += Think;

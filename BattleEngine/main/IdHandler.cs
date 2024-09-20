@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using static BattleEngine.main.Schematics;
+using static BattleEngine.common.Global;
 
 namespace BattleEngine.common
 {
@@ -31,7 +32,7 @@ namespace BattleEngine.common
 
         public static int GetID(Move asker)
         {
-            if (SchematicHandler.MoveList.ContainsKey(asker.FileName))
+            if (Schematiker.ActorList.ContainsKey(asker.FileName))
             {
                 int current = MoveCurrentID;
                 MoveCurrentID = current + 1;
@@ -45,7 +46,7 @@ namespace BattleEngine.common
         }
         public static int GetID(Actor asker)
         {
-            if (SchematicHandler.ActorList.ContainsKey(asker.FileName))
+            if (Schematiker.ActorList.ContainsKey(asker.FileName))
             {
                 int current = ActorCurrentID;
                 ActorCurrentID = current + 1;
@@ -60,7 +61,7 @@ namespace BattleEngine.common
         }
         public static int GetID(Enemy asker)
         {
-            if (SchematicHandler.EnemyList.ContainsKey(asker.FileName))
+            if (Schematiker.EnemyList.ContainsKey(asker.FileName))
             {
                 int current = EnemyCurrentID;
                 EnemyCurrentID = current + 1;

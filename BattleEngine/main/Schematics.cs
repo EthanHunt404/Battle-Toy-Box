@@ -9,6 +9,7 @@ namespace BattleEngine.main
 {
     public static class Schematics
     {
+        public static string JsonVersion = "1.0.0";
         //Move Schematic
         public record struct MoveSchematic
         {
@@ -25,7 +26,7 @@ namespace BattleEngine.main
 
             public MoveSchematic()
             {
-                Version = Global.Version;
+                Version = JsonVersion;
 
                 FileName = "reference";
                 DisplayName = "Move Schematic";
@@ -70,7 +71,7 @@ namespace BattleEngine.main
 
             public ActorSchematic()
             {
-                Version = Global.Version;
+                Version = JsonVersion;
 
                 FileName = $"reference";
                 DisplayName = "Actor Schematic";
@@ -124,7 +125,7 @@ namespace BattleEngine.main
 
             public EnemySchematic()
             {
-                Version = Global.Version;
+                Version = JsonVersion;
 
                 FileName = $"reference";
                 DisplayName = "Enemy Schematic";

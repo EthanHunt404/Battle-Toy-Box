@@ -78,10 +78,10 @@ namespace BattleEngine.main
 
         public Actor()
         {
+            FileName = $"actor";
             ID = IdHandler.GetID(this);
 
-            FileName = $"actor{ID}";
-            DisplayName = $"Actor {ID}";
+            DisplayName = $"Actor {ID + 1}";
 
             Level = 5;
 
@@ -108,10 +108,10 @@ namespace BattleEngine.main
         }
         public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
         {
+            FileName = filename.ToLower();
             ID = IdHandler.GetID(this);
 
-            FileName = filename;
-            DisplayName = displayname;
+            DisplayName = $"{displayname} {ID + 1}";
 
             Level = lvl;
 
@@ -155,7 +155,9 @@ namespace BattleEngine.main
                 }
 
                 FileName = origin.FileName;
-                DisplayName = origin.DisplayName;
+                ID = IdHandler.GetID(this);
+
+                DisplayName = $"{origin.DisplayName} {ID + 1}";
 
                 Level = origin.Level;
 
