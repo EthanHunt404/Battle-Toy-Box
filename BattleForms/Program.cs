@@ -16,6 +16,10 @@ namespace BattleForms
             Global.Init();
             FolderStructurer.CreateStructure();
 
+            Global.Schematiker.SaveSchematic(new Actor());
+            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy());
+            Global.Schematiker.RefreshSchematics();
+
             ApplicationConfiguration.Initialize();
             Application.Run(new TestWindow());
         }

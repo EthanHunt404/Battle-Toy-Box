@@ -26,7 +26,8 @@ namespace BattleEngine.main
             PlayerParty = new List<Actor>(party);
             EnemyParty = new List<Enemy>(enemies);
 
-            MemberList = new List<Actor>(PlayerParty);
+            MemberList = new List<Actor>();
+            MemberList.AddRange(PlayerParty);
             MemberList.AddRange(EnemyParty);
 
             CurrentTurn = 0;

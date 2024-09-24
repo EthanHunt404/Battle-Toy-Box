@@ -24,15 +24,15 @@ namespace BattleForms
             Clock.Start();
         }
 
-        private void Update(object sender, EventArgs e)
+        private void UpdateForm(object sender, EventArgs e)
         {
             int labelindex = 0;
             int barindex = 0;
 
             Control[] IntermediaryCollection = new Control[Controls.Count];
             Controls.CopyTo(IntermediaryCollection, 0);
-            List<Control> AllControls = new List<Control>(IntermediaryCollection.Reverse());
 
+            List<Control> AllControls = new List<Control>(IntermediaryCollection.Reverse());
             foreach (Control control in AllControls)
             {
                 Type type = control.GetType();
@@ -93,7 +93,7 @@ namespace BattleForms
         private void UseSkill(object sender, EventArgs e)
         {
             string selected = TargetSelector.SelectedItem.ToString();
-            
+
             Actor target = BH.MemberList.Find(actor => actor.DisplayName == selected);
             BH.CurrentMember.Attack(CurrentMove, target);
 
@@ -102,9 +102,10 @@ namespace BattleForms
             Clock.Start();
         }
 
-        private void LogCatcher(string text)
+        private void LogCatcher(List<string> text)
         {
-            DisplayLog.Items.Add(text);
+            DisplayLog.Items.Clear();
+            DisplayLog.Items.AddRange(text.ToArray());
         }
     }
 }

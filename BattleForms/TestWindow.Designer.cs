@@ -166,7 +166,7 @@
             // Clock
             // 
             Clock.Interval = 1000;
-            Clock.Tick += Update;
+            Clock.Tick += UpdateForm;
             // 
             // TargetSelector
             // 

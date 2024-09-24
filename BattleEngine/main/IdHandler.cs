@@ -32,7 +32,7 @@ namespace BattleEngine.common
 
         public static int GetID(Move asker)
         {
-            if (Schematiker.ActorList.ContainsKey(asker.FileName))
+            if (Schematiker.MoveList.ContainsKey(asker.FileName))
             {
                 int current = MoveCurrentID;
                 MoveCurrentID = current + 1;
