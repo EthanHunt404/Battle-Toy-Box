@@ -47,28 +47,10 @@ namespace BattleEngine.main
             AiType = EnemyAITypes.WILD;
             OnTurn += Think;
 
-            Level = 5;
-
-            Attributes = new List<StatAttribute>(ListOfAttributes);
-            for (int i = 0; i < Attributes.Count; i++)
-            {
-                StatAttribute item = Attributes[i];
-                item.Value = 5 * Level;
-                Attributes[i] = item;
-            }
-
-            ComponentRatios = new Dictionary<string, double>();
-            for (int i = 0; i < ListOfComponents.Count; i++)
-            {
-                ComponentRatios.Add(ListOfComponents[i], 1.0);
-            }
-
             MaxHealth = 500 * Attributes[0].Value;
             Health = MaxHealth;
 
             MoveSet = [new Move()];
-
-            IsHurt += Mitigate;
         }
         public Enemy(EnemyAITypes type)
         {
@@ -82,26 +64,10 @@ namespace BattleEngine.main
 
             Level = 5;
 
-            Attributes = new List<StatAttribute>(ListOfAttributes);
-            for (int i = 0; i < Attributes.Count; i++)
-            {
-                StatAttribute item = Attributes[i];
-                item.Value = 5 * Level;
-                Attributes[i] = item;
-            }
-
-            ComponentRatios = new Dictionary<string, double>();
-            for (int i = 0; i < ListOfComponents.Count; i++)
-            {
-                ComponentRatios.Add(ListOfComponents[i], 1.0);
-            }
-
             MaxHealth = 500 * Attributes[0].Value;
             Health = MaxHealth;
 
             MoveSet = [new Move()];
-
-            IsHurt += Mitigate;
         }
         public Enemy(string filename, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves)
         {
@@ -133,8 +99,6 @@ namespace BattleEngine.main
             Health = MaxHealth;
 
             MoveSet = new List<Move>(moves);
-
-            IsHurt += Mitigate;
         }
         public Enemy(string name, bool isfile)
         {
@@ -166,8 +130,6 @@ namespace BattleEngine.main
 
                 MaxHealth = origin.MaxHealth;
                 Health = MaxHealth;
-
-                IsHurt += Mitigate;
 
                 Attributes = new List<StatAttribute>(origin.Attributes);
                 ComponentRatios = new Dictionary<string, double>(origin.ComponentRatios);
