@@ -14,7 +14,6 @@ namespace BattleForms
             // see https://aka.ms/applicationconfiguration.
 
             Global.Init();
-            FolderStructurer.CreateStructure();
 
             Global.Schematiker.SaveSchematic(new Actor());
             Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy());

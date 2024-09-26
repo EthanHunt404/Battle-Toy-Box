@@ -43,6 +43,8 @@ namespace BattleEngine.common
             EnemyFileList.Clear();
             EnemyList.Clear();
 
+            FolderStructurer.CreateStructure();
+
             MoveFileList.AddRange(Directory.EnumerateFiles(User.MovePath));
             ActorFileList.AddRange(Directory.EnumerateFiles(User.ActorPath));
             EnemyFileList.AddRange(Directory.EnumerateFiles(User.EnemyPath));
