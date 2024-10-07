@@ -15,8 +15,10 @@ namespace BattleForms
 
             Global.Init();
 
-            Global.Schematiker.SaveSchematic(new Actor());
-            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy());
+            Global.Schematiker.SaveSchematic(new Actor("actor"));
+            Global.Schematiker.SaveSchematic(new Actor("supporting"));
+            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy("enemy"));
+            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy("annoyance"));
             Global.Schematiker.RefreshSchematics();
 
             ApplicationConfiguration.Initialize();

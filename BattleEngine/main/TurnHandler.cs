@@ -14,12 +14,15 @@ namespace BattleEngine.main
         public List<Enemy> EnemyParty { get; set; }
 
         public List<Actor> MemberList { get; set; }
+        public List<Actor> DeadList { get; set; }
 
         public Actor CurrentMember { get; private set; }
         public int CurrentTurn { get; private set; }
 
         public delegate void TurnDelegate(Enemy target, Actor[] party, Enemy[] enemies);
         public static event TurnDelegate OnTurn;
+
+        public static event BooleanDelegate OnEndBattle;
 
         public TurnHandler(Actor[] party, Enemy[] enemies)
         {
@@ -29,6 +32,8 @@ namespace BattleEngine.main
             MemberList = new List<Actor>();
             MemberList.AddRange(PlayerParty);
             MemberList.AddRange(EnemyParty);
+
+            DeadList = new List<Actor>();
 
             CurrentTurn = 0;
             OrderMembers();
@@ -44,14 +49,22 @@ namespace BattleEngine.main
         {
             Actor member = MemberList[CurrentTurn];
 
+            if (DeadList.Contains(member))
+            {
+                StepTurn();
+                return;
+            }
+
             if (PlayerParty.Contains(member))
             {
                 CurrentMember = member;
+                CheckBattleState();
             }
             else if (EnemyParty.Contains(member))
             {
                 Enemy intermediary = EnemyParty.Find(enemy => member.FileName == enemy.FileName);
                 OnTurn.Invoke(intermediary, PlayerParty.ToArray(), EnemyParty.ToArray());
+                CheckBattleState();
                 StepTurn();
             }
         }
@@ -80,6 +93,83 @@ namespace BattleEngine.main
             {
                 CurrentTurn += i;
                 TurnLoop();
+            }
+        }
+
+        private void CheckBattleState()
+        {
+            //Death Toll
+            foreach (Actor member in MemberList)
+            {
+                if (member.Alive == false)
+                {
+                    DeadList.Add(member);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            //Verifications
+            foreach (Actor member in EnemyParty)
+            {
+                int count = 0;
+                if (DeadList.Contains(member))
+                {
+                    count++;
+                    if (count == MemberList.Count)
+                    {
+                        EndBattle(true);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            foreach (Actor member in PlayerParty)
+            {
+                int count = 0;
+                if (DeadList.Contains(member))
+                {
+                    count++;
+                    if (count == PlayerParty.Count)
+                    {
+                        EndBattle(false);
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        private void EndBattle(bool victory)
+        {
+            if (victory)
+            {
+                BattleLogger.Log("When the dust settles down, The party remains Victorious!");
+                OnEndBattle.Invoke(true);
+                RestoreMembers();
+            }
+            else
+            {
+                BattleLogger.Log("When the dust settles down, The Party has been layed down, Defeated...");
+                OnEndBattle.Invoke(false);
+                RestoreMembers();
+            }
+        }
+
+        public void LevelUpMembers()
+        {
+            throw new NotImplementedException();
+        }
+        public void RestoreMembers()
+        {
+            foreach (Actor member in MemberList)
+            {
+                member.Restore();
             }
         }
     }

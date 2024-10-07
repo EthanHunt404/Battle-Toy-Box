@@ -16,11 +16,19 @@ namespace BattleEngine.common
         public static int ActorCurrentID { get; private set; }
         public static int EnemyCurrentID { get; private set; }
 
+        private static List<string> MoveNamesLookUp;
+        private static List<string> ActorNamesLookUp;
+        private static List<string> EnemyNamesLookUp;
+
         static IdHandler()
         {
             MoveCurrentID = 0;
             ActorCurrentID = 0;
             EnemyCurrentID = 0;
+
+            MoveNamesLookUp = new List<string>();
+            ActorNamesLookUp = new List<string>();
+            EnemyNamesLookUp = new List<string>();
         }
 
         public static void ResetIDs()
@@ -28,11 +36,15 @@ namespace BattleEngine.common
             ActorCurrentID = 0;
             MoveCurrentID = 0;
             EnemyCurrentID = 0;
+
+            MoveNamesLookUp.Clear();
+            ActorNamesLookUp.Clear();
+            EnemyNamesLookUp.Clear();
         }
 
         public static int GetID(Move asker)
         {
-            if (Schematiker.MoveList.ContainsKey(asker.FileName))
+            if (MoveNamesLookUp.Contains(asker.FileName))
             {
                 int current = MoveCurrentID;
                 MoveCurrentID = current + 1;
@@ -40,13 +52,14 @@ namespace BattleEngine.common
             }
             else
             {
+                MoveNamesLookUp.Add(asker.FileName);
                 MoveCurrentID = 0;
                 return 0;
             }
         }
         public static int GetID(Actor asker)
         {
-            if (Schematiker.ActorList.ContainsKey(asker.FileName))
+            if (ActorNamesLookUp.Contains(asker.FileName))
             {
                 int current = ActorCurrentID;
                 ActorCurrentID = current + 1;
@@ -54,6 +67,7 @@ namespace BattleEngine.common
             }
             else
             {
+                ActorNamesLookUp.Add(asker.FileName);
                 ActorCurrentID = 0;
                 return 0;
             }
@@ -61,7 +75,7 @@ namespace BattleEngine.common
         }
         public static int GetID(Enemy asker)
         {
-            if (Schematiker.EnemyList.ContainsKey(asker.FileName))
+            if (EnemyNamesLookUp.Contains(asker.FileName))
             {
                 int current = EnemyCurrentID;
                 EnemyCurrentID = current + 1;
@@ -69,6 +83,7 @@ namespace BattleEngine.common
             }
             else
             {
+                EnemyNamesLookUp.Add(asker.FileName);
                 EnemyCurrentID = 0;
                 return 0;
             }

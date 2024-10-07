@@ -1,7 +1,10 @@
 using BattleEngine.common;
 using Microsoft.VisualBasic.Logging;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using static BattleEngine.common.Global;
+using Windows.UI.Popups;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace BattleForms
 {
@@ -15,11 +18,12 @@ namespace BattleForms
             InitializeComponent();
             IdHandler.ResetIDs();
 
-            Actor[] TestActors = [new Actor(), new Actor()];
-            Enemy[] TestEnemies = [new Enemy(EnemyAITypes.WILD), new Enemy(EnemyAITypes.WILD)];
+            Actor[] TestActors = [new Actor("actor"), new Actor("supporting")];
+            Enemy[] TestEnemies = [new Enemy("enemy"), new Enemy("annoyance")];
 
             BH = new TurnHandler(TestActors, TestEnemies);
             BattleLogger.TextBus += LogCatcher;
+            TurnHandler.OnEndBattle += BattleStatePopUp;
 
             Clock.Start();
         }
@@ -72,6 +76,7 @@ namespace BattleForms
             {
                 TargetSelector.Items.Add(actor.DisplayName);
             }
+            TargetSelector.Items.Reverse();
 
             int index = 0;
             foreach (Move move in BH.CurrentMember.MoveSet)
@@ -92,17 +97,40 @@ namespace BattleForms
 
         private void UseSkill(object sender, EventArgs e)
         {
-            string selected = TargetSelector.SelectedItem.ToString();
+            try
+            {
+                string selected = TargetSelector.SelectedItem.ToString();
+                Actor target = BH.MemberList.Find(actor => actor.DisplayName == selected);
+                
+                BH.CurrentMember.Attack(CurrentMove, target);
 
-            Actor target = BH.MemberList.Find(actor => actor.DisplayName == selected);
-            BH.CurrentMember.Attack(CurrentMove, target);
-
-            BH.StepTurn();
-            SkillBox.Items.Clear();
-            Clock.Start();
+                BH.StepTurn();
+                SkillBox.Items.Clear();
+                Clock.Start();
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show("Please select a Valid Target", "Target Selection Exeption", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something unexpected happened, please report as soon as possible", "404", MessageBoxButtons.OK);
+            }
         }
 
-        private void LogCatcher(List<string> text)
+        private void BattleStatePopUp(bool victory)
+        {
+            if (victory)
+            {
+                MessageBox.Show("You Win!!!", "Congratulations", MessageBoxButtons.OK);
+            }
+            else
+            {
+                MessageBox.Show("You Lost :(", "Condolences", MessageBoxButtons.OK);
+            }
+        }
+
+        private void LogCatcher(string[] text)
         {
             DisplayLog.Items.Clear();
             DisplayLog.Items.AddRange(text.ToArray());

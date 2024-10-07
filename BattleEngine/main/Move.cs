@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using static BattleEngine.common.Global;
 using static BattleEngine.main.Schematics;
@@ -35,18 +36,19 @@ namespace BattleEngine.main
         }
 
         public delegate void DamageHandler(Move move, double result, params Actor[] targets);
-        public static event DamageHandler ?IsHurt;
+        public static event DamageHandler ?OnHurt;
 
         public Categories Category { get; set; }
         public List<string> Components { get; set; }
         public Dictionary<string, double> AttributeRatioes { get; set; }
 
-        public Move()
+        [JsonConstructor()]
+        public Move(string filename)
         {
-            FileName = $"move";
+            FileName = filename;
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"Move {ID + 1}";
+            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
             Description = "Not Implemented";
 
             Power = 10;
@@ -127,9 +129,8 @@ namespace BattleEngine.main
 
         public static implicit operator Move(MoveSchematic schema)
         {
-            Move move = new Move();
+            Move move = new Move(schema.FileName);
 
-            move.FileName = schema.FileName;
             move.DisplayName = schema.DisplayName;
             move.Description = schema.Description;
             move.Power = schema.Power;
@@ -155,7 +156,7 @@ namespace BattleEngine.main
             }
 
             result = Power * multiplier;
-            IsHurt.Invoke(this, result, targets);
+            OnHurt.Invoke(this, result, targets);
         }
     }
 }

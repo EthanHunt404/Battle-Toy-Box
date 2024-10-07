@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using static BattleEngine.common.Global;
@@ -10,9 +11,10 @@ namespace BattleEngine.main
 {
     public class Actor
     {
-        public int ID { get; protected set; }
-        public string FileName { get; protected set; }
-        public string DisplayName { get; set; }
+        //Adressers
+        public string ?FileName { get; protected set; }
+        public int ?ID { get; protected set; }
+        public string ?DisplayName { get; set; }
 
         private double _maxhp;
         public virtual double MaxHealth
@@ -72,18 +74,23 @@ namespace BattleEngine.main
             }
         }
 
+        public bool Alive { get; protected set; }
+
         public List<StatAttribute> Attributes { get; set; }
         public Dictionary<string, double> ComponentRatios { get; protected set; }
         public List<Move> MoveSet { get; set; }
 
-        public Actor()
+        [JsonConstructor()]
+        public Actor(string filename)
         {
-            FileName = $"actor";
+            FileName = filename;
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"Actor {ID + 1}";
+            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
 
             Level = 5;
+            
+            Alive = true;
 
             Attributes = new List<StatAttribute>(ListOfAttributes);
             for (int i = 0; i < Attributes.Count; i++)
@@ -104,7 +111,7 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(ListOfTestingMoves);
 
-            IsHurt += Mitigate;
+            OnHurt += Mitigate;
         }
         public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
         {
@@ -114,6 +121,8 @@ namespace BattleEngine.main
             DisplayName = $"{displayname} {ID + 1}";
 
             Level = lvl;
+
+            Alive = true;
 
             Attributes = new List<StatAttribute>(ListOfAttributes);
             for (int i = 0; i < Attributes.Count; i++)
@@ -134,7 +143,7 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(moves);
 
-            IsHurt += Mitigate;
+            OnHurt += Mitigate;
         }
         public Actor(string name, bool isfile)
         {
@@ -161,10 +170,12 @@ namespace BattleEngine.main
 
                 Level = origin.Level;
 
+                Alive = true;
+
                 MaxHealth = origin.MaxHealth;
                 Health = MaxHealth;
 
-                IsHurt += Mitigate;
+                OnHurt += Mitigate;
 
                 Attributes = new List<StatAttribute>(origin.Attributes);
                 ComponentRatios = new Dictionary<string, double>(origin.ComponentRatios);
@@ -178,9 +189,8 @@ namespace BattleEngine.main
 
         public static implicit operator Actor(ActorSchematic schema)
         {
-            Actor actor = new Actor();
+            Actor actor = new Actor(schema.FileName);
 
-            actor.FileName = schema.FileName;
             actor.DisplayName = schema.DisplayName;
             actor.Level = schema.Level;
             actor.MaxHealth = schema.MaxHealth;
@@ -191,15 +201,36 @@ namespace BattleEngine.main
             return actor;
         }
 
+        protected virtual void DeathCheck()
+        {
+            if (Health <= 0)
+            {
+                Alive = false;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        public void Restore()
+        {
+            Health = MaxHealth;
+            Alive = true;
+        }
+
         public virtual void LevelUp()
         {
-            Level += 1;
-            MaxHealth = Level * (Attributes[0].Value * 1.5);
-            Health = MaxHealth;
+            throw new NotImplementedException();
+            //Level += 1;
+            //MaxHealth = Level * (Attributes[0].Value * 1.5);
+            //Restore();
         }
 
         public void Mitigate(Move move, double result, params Actor[] targets)
         {
+            if (!Alive) return;
+
             double mitigationvalue = 0;
 
             if (targets.Contains(this))
@@ -213,19 +244,26 @@ namespace BattleEngine.main
                 }
 
                 Health -= mitigationvalue;
+
+                DeathCheck();
+
                 BattleLogger.Log($"{DisplayName} received {mitigationvalue} damage!");
             }
         }
 
         public void Attack(int move, params Actor[] targets)
         {
-            MoveSet[move].Trigger(this, targets);
+            if (!Alive) return;
+
             BattleLogger.Log($"{DisplayName} used {MoveSet[move].DisplayName}!");
+            MoveSet[move].Trigger(this, targets);
         }
         public void Attack(Move move, params Actor[] targets)
         {
-            move.Trigger(this, targets);
+            if (!Alive) return;
+
             BattleLogger.Log($"{DisplayName} used {move.DisplayName}!");
+            move.Trigger(this, targets);
         }
     }
 }

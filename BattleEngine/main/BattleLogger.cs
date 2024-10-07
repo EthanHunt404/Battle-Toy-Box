@@ -10,14 +10,14 @@ namespace BattleEngine.main
     {
         public static  List<string> FullLog { get; set; } = new List<string>();
 
-        public delegate void TextDelegate(List<string> text);
+        public delegate void TextDelegate(string[] text);
         public static event TextDelegate TextBus;
 
         public static void Log(string text)
         {
             FullLog.Add(text);
 
-            TextBus.Invoke(FullLog);
+            TextBus.Invoke(FullLog.ToArray());
         }
     }
 }

@@ -20,6 +20,8 @@ namespace BattleEngine.common
 
         public static List<Move> ListOfTestingMoves { get; set; }
 
+        public delegate void BooleanDelegate(bool value);
+
         public static void Init()
         {
             Schematiker = new SchematicHandler();
