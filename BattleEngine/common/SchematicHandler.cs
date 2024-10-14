@@ -53,36 +53,39 @@ namespace BattleEngine.common
             {
                 Move currentmove = new Move(movepath, true);
 
-                MoveList.Add(currentmove.FileName, movepath);
+                MoveList.Add(currentmove.InternalName, movepath);
             }
             foreach (string actorpath in ActorFileList)
             {
                 Actor currentactor = new Actor(actorpath, true);
 
-                ActorList.Add(currentactor.FileName, actorpath);
+                ActorList.Add(currentactor.InternalName, actorpath);
             }
             foreach (string enemypath in EnemyFileList)
             {
                 Enemy currentenemy = new Enemy(enemypath, true);
 
-                EnemyList.Add(currentenemy.FileName, enemypath);
+                EnemyList.Add(currentenemy.InternalName, enemypath);
             }
         }
-
-        public void SaveSchematic(MoveSchematic schema)
+        public void SaveSchematic<T>(T asker) where T: IFileInfo
         {
-            string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-            File.WriteAllText(User.MovePath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
-        }
-        public void SaveSchematic(ActorSchematic schema)
-        {
-            string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-            File.WriteAllText(User.ActorPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
-        }
-        public void SaveSchematic(EnemySchematic schema)
-        {
-            string Intermediary = JsonSerializer.Serialize(schema, Global.SchemaFormatter);
-            File.WriteAllText(User.EnemyPath + $@"\{schema.FileName.ToLower()}.json", Intermediary);
+            string Intermediary;
+            switch (asker)
+            {
+                case Enemy:
+                    Intermediary = JsonSerializer.Serialize(asker, Global.SchemaFormatter);
+                    File.WriteAllText(User.EnemyPath + $@"\{asker.InternalName}.json", Intermediary);
+                    break;
+                case Actor:
+                    Intermediary = JsonSerializer.Serialize(asker, Global.SchemaFormatter);
+                    File.WriteAllText(User.ActorPath + $@"\{asker.InternalName}.json", Intermediary);
+                    break;
+                case Move:
+                    Intermediary = JsonSerializer.Serialize(asker, Global.SchemaFormatter);
+                    File.WriteAllText(User.MovePath + $@"\{asker.InternalName}.json", Intermediary);
+                    break;
+            }
         }
     }
 }

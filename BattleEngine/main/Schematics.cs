@@ -9,12 +9,18 @@ namespace BattleEngine.main
 {
     public static class Schematics
     {
+        public interface IFileInfo
+        {
+            string InternalName { get; protected set; }
+        }
+
         public static string JsonVersion = "1.0.0";
+
         //Move Schematic
-        public record struct MoveSchematic
+        public record MoveSchematic: IFileInfo
         {
             public string Version;
-            public string FileName;
+            public string InternalName { get; set; }
 
             public string DisplayName;
             public string Description;
@@ -28,7 +34,7 @@ namespace BattleEngine.main
             {
                 Version = JsonVersion;
 
-                FileName = "reference";
+                InternalName = "reference";
                 DisplayName = "Move Schematic";
                 Description = "Empty";
 
@@ -41,7 +47,7 @@ namespace BattleEngine.main
             {
                 MoveSchematic schema = new MoveSchematic();
 
-                schema.FileName = move.FileName;
+                schema.InternalName = move.InternalName;
                 schema.DisplayName = move.DisplayName;
                 schema.Description = move.Description;
                 schema.Power = move.Power;
@@ -54,11 +60,11 @@ namespace BattleEngine.main
         }
 
         //Actor Schematic
-        public record struct ActorSchematic
+        public record ActorSchematic: IFileInfo
         {
             public string Version;
 
-            public string FileName;
+            public string InternalName { get; set; }
             public string DisplayName;
 
             public double MaxHealth;
@@ -73,7 +79,7 @@ namespace BattleEngine.main
             {
                 Version = JsonVersion;
 
-                FileName = $"reference";
+                InternalName = $"reference";
                 DisplayName = "Actor Schematic";
 
                 MaxHealth = -1;
@@ -89,7 +95,7 @@ namespace BattleEngine.main
             {
                 ActorSchematic schema = new ActorSchematic();
 
-                schema.FileName = actor.FileName;
+                schema.InternalName = actor.InternalName;
                 schema.DisplayName = actor.DisplayName;
                 schema.Level = actor.Level;
                 schema.MaxHealth = actor.MaxHealth;
@@ -106,11 +112,11 @@ namespace BattleEngine.main
         }
 
         //Enemy Schematic
-        public record struct EnemySchematic
+        public record EnemySchematic: IFileInfo
         {
             public string Version;
 
-            public string FileName;
+            public string InternalName { get; set; }
             public string DisplayName;
 
             public EnemyAITypes AiType;
@@ -127,7 +133,7 @@ namespace BattleEngine.main
             {
                 Version = JsonVersion;
 
-                FileName = $"reference";
+                InternalName = $"reference";
                 DisplayName = "Enemy Schematic";
 
                 MaxHealth = -1;
@@ -145,7 +151,7 @@ namespace BattleEngine.main
             {
                 EnemySchematic schema = new EnemySchematic();
 
-                schema.FileName = enemy.FileName;
+                schema.InternalName = enemy.InternalName;
                 schema.DisplayName = enemy.DisplayName;
                 schema.AiType = enemy.AiType;
                 schema.Level = enemy.Level;

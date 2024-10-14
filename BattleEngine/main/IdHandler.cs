@@ -44,7 +44,7 @@ namespace BattleEngine.common
 
         public static int GetID(Move asker)
         {
-            if (MoveNamesLookUp.Contains(asker.FileName))
+            if (MoveNamesLookUp.Contains(asker.InternalName))
             {
                 int current = MoveCurrentID;
                 MoveCurrentID = current + 1;
@@ -52,14 +52,14 @@ namespace BattleEngine.common
             }
             else
             {
-                MoveNamesLookUp.Add(asker.FileName);
+                MoveNamesLookUp.Add(asker.InternalName);
                 MoveCurrentID = 0;
                 return 0;
             }
         }
         public static int GetID(Actor asker)
         {
-            if (ActorNamesLookUp.Contains(asker.FileName))
+            if (ActorNamesLookUp.Contains(asker.InternalName))
             {
                 int current = ActorCurrentID;
                 ActorCurrentID = current + 1;
@@ -67,7 +67,7 @@ namespace BattleEngine.common
             }
             else
             {
-                ActorNamesLookUp.Add(asker.FileName);
+                ActorNamesLookUp.Add(asker.InternalName);
                 ActorCurrentID = 0;
                 return 0;
             }
@@ -75,7 +75,7 @@ namespace BattleEngine.common
         }
         public static int GetID(Enemy asker)
         {
-            if (EnemyNamesLookUp.Contains(asker.FileName))
+            if (EnemyNamesLookUp.Contains(asker.InternalName))
             {
                 int current = EnemyCurrentID;
                 EnemyCurrentID = current + 1;
@@ -83,7 +83,7 @@ namespace BattleEngine.common
             }
             else
             {
-                EnemyNamesLookUp.Add(asker.FileName);
+                EnemyNamesLookUp.Add(asker.InternalName);
                 EnemyCurrentID = 0;
                 return 0;
             }

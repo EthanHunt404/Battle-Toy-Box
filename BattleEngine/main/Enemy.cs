@@ -13,7 +13,7 @@ using static BattleEngine.main.TurnHandler;
 
 namespace BattleEngine.main
 {
-    public class Enemy : Actor, IDisposable
+    public class Enemy : Actor, IDisposable, IFileInfo
     {
         private double _maxhp;
         public override double MaxHealth
@@ -39,12 +39,12 @@ namespace BattleEngine.main
         public EnemyAITypes AiType { get; set; }
 
         [JsonConstructor()]
-        public Enemy(string filename) : base(filename)
+        public Enemy(string internalname) : base(internalname)
         {
-            FileName = filename;
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
+            DisplayName = $"{InternalName[0].ToString().ToUpper()}{InternalName.Substring(1)} {ID + 1}";
 
             AiType = EnemyAITypes.WILD;
             OnTurn += Think;
@@ -54,12 +54,12 @@ namespace BattleEngine.main
 
             MoveSet = [new Move("move")];
         }
-        public Enemy(string filename, EnemyAITypes type) : base(filename)
+        public Enemy(string internalname, EnemyAITypes type) : base(internalname)
         {
-            FileName = $"enemy";
+            InternalName = $"enemy";
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
+            DisplayName = $"{InternalName[0].ToString().ToUpper()}{InternalName.Substring(1)} {ID + 1}";
 
             AiType = type;
             OnTurn += Think;
@@ -71,9 +71,9 @@ namespace BattleEngine.main
 
             MoveSet = [new Move("move")];
         }
-        public Enemy(string filename, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves) : base(filename)
+        public Enemy(string internalname, string displayname, EnemyAITypes type, int lvl, double[] ratios, params Move[] moves) : base(internalname)
         {
-            FileName = filename.ToLower();
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
             DisplayName = $"{displayname} {ID + 1}";
@@ -102,25 +102,25 @@ namespace BattleEngine.main
 
             MoveSet = new List<Move>(moves);
         }
-        public Enemy(string name, bool isfile) : base(name)
+        public Enemy(string path, bool isfile) : base(path)
         {
             string JsonString;
             EnemySchematic origin;
 
             if (isfile == true)
             {
-                if (name.Contains(".json"))
+                if (path.Contains(".json"))
                 {
-                    JsonString = File.ReadAllText(name);
+                    JsonString = File.ReadAllText(path);
                     origin = JsonSerializer.Deserialize<EnemySchematic>(JsonString, SchemaFormatter);
                 }
                 else
                 {
-                    JsonString = File.ReadAllText($@"{User.EnemyPath}\{name}.json");
+                    JsonString = File.ReadAllText($@"{User.EnemyPath}\{path}.json");
                     origin = JsonSerializer.Deserialize<EnemySchematic>(JsonString, SchemaFormatter);
                 }
 
-                FileName = origin.FileName;
+                InternalName = origin.InternalName;
                 ID = IdHandler.GetID(this);
 
                 DisplayName = $"{origin.DisplayName} {ID + 1}";
@@ -145,7 +145,7 @@ namespace BattleEngine.main
 
         public static implicit operator Enemy(EnemySchematic schema)
         {
-            Enemy enemy = new Enemy(schema.FileName);
+            Enemy enemy = new Enemy(schema.InternalName);
 
             enemy.DisplayName = schema.DisplayName;
             enemy.AiType = schema.AiType;
@@ -204,7 +204,7 @@ namespace BattleEngine.main
 
         public void Dispose()
         {
-            FileName = null;
+            InternalName = null;
             ID = null;
             DisplayName = null;
 

@@ -62,7 +62,7 @@ namespace BattleEngine.main
             }
             else if (EnemyParty.Contains(member))
             {
-                Enemy intermediary = EnemyParty.Find(enemy => member.FileName == enemy.FileName);
+                Enemy intermediary = EnemyParty.Find(enemy => member.InternalName == enemy.InternalName);
                 OnTurn.Invoke(intermediary, PlayerParty.ToArray(), EnemyParty.ToArray());
                 CheckBattleState();
                 StepTurn();

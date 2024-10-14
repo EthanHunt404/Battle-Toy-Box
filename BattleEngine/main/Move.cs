@@ -6,10 +6,10 @@ using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.main
 {
-    public record Move
+    public record Move: IFileInfo
     {
-        public int ID { get; private set; }
-        public string FileName { get; private set; }
+        public string InternalName { get; set; }
+        public int ?ID { get; private set; }
 
         public string DisplayName { get; set; }
         public string Description { get; set; }
@@ -43,12 +43,12 @@ namespace BattleEngine.main
         public Dictionary<string, double> AttributeRatioes { get; set; }
 
         [JsonConstructor()]
-        public Move(string filename)
+        public Move(string internalname)
         {
-            FileName = filename;
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
+            DisplayName = $"{InternalName[0].ToString().ToUpper()}{InternalName.Substring(1)}";
             Description = "Not Implemented";
 
             Power = 10;
@@ -63,12 +63,12 @@ namespace BattleEngine.main
             }
             AttributeRatioes[ListOfAttributes[1].Name.ToUpper()] = 1.0;
         }
-        public Move(string filename, string displayname, string description, int power, Categories category, double[] ratioes, params string[] components)
+        public Move(string internalname, string displayname, string description, int power, Categories category, double[] ratioes, params string[] components)
         {
-            FileName = filename.ToLower();
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{displayname} {ID + 1}";
+            DisplayName = $"{displayname}";
             Description = description;
 
             Power = power;
@@ -86,28 +86,28 @@ namespace BattleEngine.main
                 AttributeRatioes.Add(ListOfAttributes[i].Name.ToUpper(), ratioes[i]);
             }
         }
-        public Move(string name, bool isfile)
+        public Move(string path, bool isfile)
         {
             if (isfile == true)
             {
                 string JsonString;
                 MoveSchematic origin;
 
-                if (name.Contains(".json"))
+                if (path.Contains(".json"))
                 {
-                    JsonString = File.ReadAllText(name);
+                    JsonString = File.ReadAllText(path);
                     origin = JsonSerializer.Deserialize<MoveSchematic>(JsonString, SchemaFormatter);
                 }
                 else
                 {
-                    JsonString = File.ReadAllText($@"{User.MovePath}\{name}.json");
+                    JsonString = File.ReadAllText($@"{User.MovePath}\{path}.json");
                     origin = JsonSerializer.Deserialize<MoveSchematic>(JsonString, SchemaFormatter);
                 }
 
-                FileName = origin.FileName;
+                InternalName = origin.InternalName;
                 ID = IdHandler.GetID(this);
 
-                DisplayName = $"{origin.DisplayName} {ID + 1}";
+                DisplayName = $"{origin.DisplayName}";
                 Description = origin.Description;
 
                 Power = origin.Power;
@@ -129,7 +129,7 @@ namespace BattleEngine.main
 
         public static implicit operator Move(MoveSchematic schema)
         {
-            Move move = new Move(schema.FileName);
+            Move move = new Move(schema.InternalName);
 
             move.DisplayName = schema.DisplayName;
             move.Description = schema.Description;

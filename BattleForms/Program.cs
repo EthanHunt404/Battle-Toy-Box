@@ -1,4 +1,5 @@
 using BattleEngine.common;
+using static BattleEngine.main.Schematics;
 
 namespace BattleForms
 {
@@ -17,8 +18,8 @@ namespace BattleForms
 
             Global.Schematiker.SaveSchematic(new Actor("actor"));
             Global.Schematiker.SaveSchematic(new Actor("supporting"));
-            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy("enemy"));
-            Global.Schematiker.SaveSchematic((Schematics.EnemySchematic)new Enemy("annoyance"));
+            Global.Schematiker.SaveSchematic(new Enemy("enemy"));
+            Global.Schematiker.SaveSchematic(new Enemy("annoyance"));
             Global.Schematiker.RefreshSchematics();
 
             ApplicationConfiguration.Initialize();

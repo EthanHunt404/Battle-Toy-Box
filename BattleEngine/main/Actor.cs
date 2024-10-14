@@ -9,12 +9,12 @@ using static BattleEngine.main.Schematics;
 
 namespace BattleEngine.main
 {
-    public class Actor
+    public class Actor: IFileInfo
     {
         //Adressers
-        public string ?FileName { get; protected set; }
+        public string InternalName { get; set; }
         public int ?ID { get; protected set; }
-        public string ?DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
         private double _maxhp;
         public virtual double MaxHealth
@@ -81,12 +81,12 @@ namespace BattleEngine.main
         public List<Move> MoveSet { get; set; }
 
         [JsonConstructor()]
-        public Actor(string filename)
+        public Actor(string internalname)
         {
-            FileName = filename;
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{FileName[0].ToString().ToUpper()}{FileName.Substring(1)} {ID + 1}";
+            DisplayName = $"{InternalName[0].ToString().ToUpper()}{InternalName.Substring(1)} {ID + 1}";
 
             Level = 5;
             
@@ -113,9 +113,9 @@ namespace BattleEngine.main
 
             OnHurt += Mitigate;
         }
-        public Actor(string filename, string displayname, int lvl, double[] ratios, params Move[] moves)
+        public Actor(string internalname, string displayname, int lvl, double[] ratios, params Move[] moves)
         {
-            FileName = filename.ToLower();
+            InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
             DisplayName = $"{displayname} {ID + 1}";
@@ -145,25 +145,25 @@ namespace BattleEngine.main
 
             OnHurt += Mitigate;
         }
-        public Actor(string name, bool isfile)
+        public Actor(string path, bool isfile)
         {
             string JsonString;
             ActorSchematic origin;
 
             if (isfile == true)
             {
-                if (name.Contains(".json"))
+                if (path.Contains(".json"))
                 {
-                    JsonString = File.ReadAllText(name);
+                    JsonString = File.ReadAllText(path);
                     origin = JsonSerializer.Deserialize<ActorSchematic>(JsonString, SchemaFormatter);
                 }
                 else
                 {
-                    JsonString = File.ReadAllText($@"{User.ActorPath}\{name}.json");
+                    JsonString = File.ReadAllText($@"{User.ActorPath}\{path}.json");
                     origin = JsonSerializer.Deserialize<ActorSchematic>(JsonString, SchemaFormatter);
                 }
 
-                FileName = origin.FileName;
+                InternalName = origin.InternalName;
                 ID = IdHandler.GetID(this);
 
                 DisplayName = $"{origin.DisplayName} {ID + 1}";
@@ -189,7 +189,7 @@ namespace BattleEngine.main
 
         public static implicit operator Actor(ActorSchematic schema)
         {
-            Actor actor = new Actor(schema.FileName);
+            Actor actor = new Actor(schema.InternalName);
 
             actor.DisplayName = schema.DisplayName;
             actor.Level = schema.Level;
