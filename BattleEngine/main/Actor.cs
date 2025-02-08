@@ -86,7 +86,7 @@ namespace BattleEngine.main
             InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{InternalName[0].ToString().ToUpper()}{InternalName.Substring(1)} {ID + 1}";
+            DisplayName = InternalName[0].ToString().ToUpper() + InternalName.Substring(1);
 
             Level = 5;
             
@@ -118,7 +118,7 @@ namespace BattleEngine.main
             InternalName = internalname.ToLower();
             ID = IdHandler.GetID(this);
 
-            DisplayName = $"{displayname} {ID + 1}";
+            DisplayName = displayname;
 
             Level = lvl;
 
@@ -166,7 +166,7 @@ namespace BattleEngine.main
                 InternalName = origin.InternalName;
                 ID = IdHandler.GetID(this);
 
-                DisplayName = $"{origin.DisplayName} {ID + 1}";
+                DisplayName = origin.DisplayName;
 
                 Level = origin.Level;
 

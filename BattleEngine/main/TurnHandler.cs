@@ -42,6 +42,7 @@ namespace BattleEngine.main
 
         private void OrderMembers()
         {
+            MemberList.ForEach(member => member.DisplayName = $"{member.DisplayName} {member.ID}");
             MemberList.OrderBy(actor => actor.Attributes.Last());
         }
 

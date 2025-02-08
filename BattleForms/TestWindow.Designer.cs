@@ -84,36 +84,36 @@
             DisplayLabel1.AutoSize = true;
             DisplayLabel1.Location = new Point(12, 4);
             DisplayLabel1.Name = "DisplayLabel1";
-            DisplayLabel1.Size = new Size(38, 15);
+            DisplayLabel1.Size = new Size(32, 15);
             DisplayLabel1.TabIndex = 6;
-            DisplayLabel1.Text = "label1";
+            DisplayLabel1.Text = "label";
             // 
             // DisplayLabel2
             // 
             DisplayLabel2.AutoSize = true;
             DisplayLabel2.Location = new Point(12, 48);
             DisplayLabel2.Name = "DisplayLabel2";
-            DisplayLabel2.Size = new Size(38, 15);
+            DisplayLabel2.Size = new Size(32, 15);
             DisplayLabel2.TabIndex = 7;
-            DisplayLabel2.Text = "label2";
+            DisplayLabel2.Text = "label";
             // 
             // DisplayLabel3
             // 
             DisplayLabel3.AutoSize = true;
             DisplayLabel3.Location = new Point(407, 4);
             DisplayLabel3.Name = "DisplayLabel3";
-            DisplayLabel3.Size = new Size(38, 15);
+            DisplayLabel3.Size = new Size(32, 15);
             DisplayLabel3.TabIndex = 8;
-            DisplayLabel3.Text = "label3";
+            DisplayLabel3.Text = "label";
             // 
             // DisplayLabel4
             // 
             DisplayLabel4.AutoSize = true;
-            DisplayLabel4.Location = new Point(408, 48);
+            DisplayLabel4.Location = new Point(409, 48);
             DisplayLabel4.Name = "DisplayLabel4";
-            DisplayLabel4.Size = new Size(38, 15);
+            DisplayLabel4.Size = new Size(32, 15);
             DisplayLabel4.TabIndex = 9;
-            DisplayLabel4.Text = "label4";
+            DisplayLabel4.Text = "label";
             // 
             // SelectButton
             // 
@@ -194,7 +194,7 @@
             Controls.Add(HealthBar2);
             Controls.Add(HealthBar1);
             Name = "TestWindow";
-            Text = "TestWindow";
+            Text = "label";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -206,7 +206,6 @@
         internal ProgressBar HealthBar4;
         internal Label DisplayLabel1;
         internal Label DisplayLabel2;
-        internal Label DisplayLabel3;
         internal Label DisplayLabel4;
         internal Button SelectButton;
         internal ListBox DisplayLog;
@@ -216,5 +215,6 @@
         private System.Windows.Forms.Timer Clock;
         private ColumnHeader displaynamecolumn;
         private DomainUpDown TargetSelector;
+        internal Label DisplayLabel3;
     }
 }

@@ -18,8 +18,8 @@ namespace BattleForms
             InitializeComponent();
             IdHandler.ResetIDs();
 
-            Actor[] TestActors = [new Actor("actor"), new Actor("supporting")];
-            Enemy[] TestEnemies = [new Enemy("enemy"), new Enemy("annoyance")];
+            Actor[] TestActors = [new Actor("actor", true), new Actor("supporting", true)];
+            Enemy[] TestEnemies = [new Enemy("enemy", true), new Enemy("annoyance", true)];
 
             BH = new TurnHandler(TestActors, TestEnemies);
             BattleLogger.TextBus += LogCatcher;
